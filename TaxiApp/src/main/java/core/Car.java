@@ -4,7 +4,7 @@ public class Car {
 
     public Car(String licensePlate) {
 
-        if (!licensePlate.matches("[АВЕКМНОРСТУХ]\\d{3}[АВЕКМНОРСТУХ]{2}"))
+        if (!licensePlate.matches("[ABEKMHOPCTYX]\\d{3}[ABEKMHOPCTYX]{2}"))
             throw new IllegalArgumentException("Wrong license plate format");
 
         this.licensePlate = licensePlate;

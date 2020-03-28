@@ -1,32 +1,15 @@
 package core;
 
-public class Driver {
+public class Driver extends User {
 
-    private final String fName;
-    private final String sName;
-    private String phone;
-
-    private DriverStatus status;
-    private Car car = null;
+    private DriverStatus status = DriverStatus.FREE;
+    private Car car;
     private Order order = null;
     private Order newOrder = null;
 
-    public Driver(String fName, String sName, String phone) {
-        this.fName = fName;
-        this.sName = sName;
-        this.phone = phone;
-    }
-
-    public String getFName() {
-        return fName;
-    }
-
-    public String getSName() {
-        return sName;
-    }
-
-    public String getPhone() {
-        return phone;
+    public Driver(int userId, PersonInfo personInfo, Car car) {
+        super(userId, personInfo);
+        this.car = car;
     }
 
     public DriverStatus getStatus() {
@@ -41,10 +24,6 @@ public class Driver {
         return order;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public void setStatus(DriverStatus status) {
         this.status = status;
     }
@@ -56,12 +35,12 @@ public class Driver {
     }
 
     /**
-     * We can send order to driver in 2 cases:
+     * We can successfully set new order to driver in 2 cases:
      *  - He hasn't got a newOrder
      *  - His newOrder has been finished or accepted by another driver already.
      * @return true if newOrder sets, otherwise -- false.
      */
-    public boolean sendOrder(Order order) {
+    public boolean setNewOrder(Order order) {
         if (this.newOrder == null || this.newOrder.getStatus() != OrderStatus.WAIT_FOR_DRIVER) {
             this.newOrder = order;
             return true;
@@ -71,18 +50,18 @@ public class Driver {
 
     /**
      * Driver can accept order in 1 case:
-     *  - He hasn't order, he has newOrder and newOrder is WAIT_FOR_DRIVERS
+     *  - He hasn't order, he has newOrder, newOrder is WAIT_FOR_DRIVERS and driver is FREE
      * @return True if newOrder was accepted; false otherwise
-     * In any case sets newOrder = null
      */
     public boolean acceptOrder() {
-        if (order == null && newOrder != null && newOrder.getStatus() == OrderStatus.WAIT_FOR_DRIVER) {
+        if (order == null && newOrder != null
+                && newOrder.getStatus() == OrderStatus.WAIT_FOR_DRIVER && status == DriverStatus.FREE) {
             newOrder.setStatus(OrderStatus.ACCEPTED);
+            status = DriverStatus.BUSY;
             order = newOrder;
             newOrder = null;
             return true;
         }
-//        newOrder = null;
         return false;
     }
 
@@ -94,6 +73,7 @@ public class Driver {
         if (order != null) {
             order.setStatus(OrderStatus.FINISHED);
             order = null;
+            status = DriverStatus.FREE;
         }
     }
 }
