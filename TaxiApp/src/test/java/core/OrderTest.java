@@ -12,10 +12,10 @@ class OrderTest {
 
     @BeforeEach
     private void initFields() {
-        driver = new Driver(1, new PersonInfo("FirstName",
+        driver = new Driver("driver1", new PersonInfo("FirstName",
                 "SecondName", "8-888-888-88-88"), new Car("P233AB"));
         order = new Order("Address1",
-                new TaxiClient(2,
+                new TaxiClient("client1",
                         new PersonInfo("ClientName", "ClientSecondName", "9-999-999-99-99")));
     }
 
@@ -39,7 +39,7 @@ class OrderTest {
 
     @Test
     public void twoOrdersOneDriverTest() {
-        Order order2 = new Order("Address2", new TaxiClient(4,
+        Order order2 = new Order("Address2", new TaxiClient("client2",
                 new PersonInfo("Name", "sName", "22222222")));
         Assertions.assertTrue(driver.setNewOrder(order));
         Assertions.assertEquals(driver.getStatus(), DriverStatus.FREE);
@@ -71,7 +71,7 @@ class OrderTest {
 
     @Test
     public void oneOrderTwoDriversTest() {
-        Driver driver2 = new Driver(5, new PersonInfo("Test", "Test", "TestPhone"),
+        Driver driver2 = new Driver("driver2", new PersonInfo("Test", "Test", "TestPhone"),
                 new Car("B122OX"));
         Assertions.assertTrue(driver.setNewOrder(order));
         Assertions.assertEquals(driver.getStatus(), DriverStatus.FREE);

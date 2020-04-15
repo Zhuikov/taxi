@@ -7,8 +7,8 @@ public class Driver extends User {
     private Order order = null;
     private Order newOrder = null;
 
-    public Driver(int userId, PersonInfo personInfo, Car car) {
-        super(userId, personInfo);
+    public Driver(String login, PersonInfo personInfo, Car car) {
+        super(login, personInfo);
         this.car = car;
     }
 

@@ -11,7 +11,7 @@ public class OrderRepository {
 
     private List<Order> orders = new ArrayList<>();
 
-    public void saveOrder(Order order) {
+    public void addOrder(Order order) {
         orders.add(order);
     }
 
