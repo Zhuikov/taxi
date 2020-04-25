@@ -9,11 +9,12 @@ class OrderTest {
 
     private Driver driver;
     private Order order;
+    private CarsOwner owner;
 
     @BeforeEach
     private void initFields() {
         driver = new Driver("driver1", new PersonInfo("FirstName",
-                "SecondName", "8-888-888-88-88"), new Car("P233AB"));
+                "SecondName", "8-888-888-88-88"), new Car("P233AB", owner));
         order = new Order("Address1",
                 new TaxiClient("client1",
                         new PersonInfo("ClientName", "ClientSecondName", "9-999-999-99-99")));
@@ -72,7 +73,7 @@ class OrderTest {
     @Test
     public void oneOrderTwoDriversTest() {
         Driver driver2 = new Driver("driver2", new PersonInfo("Test", "Test", "TestPhone"),
-                new Car("B122OX"));
+                new Car("B122OX", owner));
         Assertions.assertTrue(driver.setNewOrder(order));
         Assertions.assertEquals(driver.getStatus(), DriverStatus.FREE);
         Assertions.assertTrue(driver2.setNewOrder(order));
@@ -90,6 +91,22 @@ class OrderTest {
         Assertions.assertEquals(driver.getStatus(), DriverStatus.FREE);
         Assertions.assertFalse(driver2.acceptOrder());
         Assertions.assertEquals(driver2.getStatus(), DriverStatus.FREE);
+    }
+
+    @Test
+    public void rejectOrderTwoDriversTest() {
+        Driver driver2 = new Driver("driver2", new PersonInfo("Test", "Test", "TestPhone"),
+                new Car("B122OX", owner));
+        Assertions.assertTrue(driver.setNewOrder(order));
+
+        driver.rejectOrder();
+        Assertions.assertFalse(driver.acceptOrder());
+        Assertions.assertEquals(driver.getStatus(), DriverStatus.FREE);
+
+        Assertions.assertTrue(driver.setNewOrder(order));
+
+
+
     }
 
 }

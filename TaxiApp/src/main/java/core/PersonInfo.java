@@ -2,22 +2,22 @@ package core;
 
 public class PersonInfo {
 
-    private final String fName;
-    private final String sName;
+    private final String name;
+    private final String surname;
     private final String phone;
 
-    public PersonInfo(String fName, String sName, String phone) {
-        this.fName = fName;
-        this.sName = sName;
+    public PersonInfo(String name, String surname, String phone) {
+        this.name = name;
+        this.surname = surname;
         this.phone = phone;
     }
 
-    public String getFName() {
-        return fName;
+    public String getName() {
+        return name;
     }
 
-    public String getSName() {
-        return sName;
+    public String getSurname() {
+        return surname;
     }
 
     public String getPhone() {

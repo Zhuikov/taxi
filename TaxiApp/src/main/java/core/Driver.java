@@ -24,9 +24,9 @@ public class Driver extends User {
         return order;
     }
 
-    public void setStatus(DriverStatus status) {
-        this.status = status;
-    }
+//    public void setStatus(DriverStatus status) {
+//        this.status = status;
+//    }
 
     public void setCar(Car car) {
         this.car.setUsed(false);
