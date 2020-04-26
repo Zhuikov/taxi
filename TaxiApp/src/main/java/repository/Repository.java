@@ -9,12 +9,14 @@ public class Repository {
 
     private static Repository repository = null;
 
-    private List<Driver> drivers;
-    private List<Car> cars;
-    private List<TaxiClient> taxiClients;
-    private List<Manager> managers;
-    private List<CarsOwner> carsOwners;
-    private List<Order> orders;
+    private final static UserRepository<Driver> driverRepository     = new DriverRepository();
+    private final static UserRepository<Manager> managerRepository   = new ManagerRepository();
+    private final static UserRepository<TaxiClient> clientRepository = new TaxiClientRepository();
+    private final static UserRepository<CarsOwner> ownerRepository   = new CarsOwnerRepository();
+
+    private final static OrderRepository orderRepository             = new OrderRepository();
+    private final static CarRepository carRepository                 = new CarRepository();
+    private final static CVRepository CVRepository                   = new CVRepository();
 
     private Repository() {}
 
@@ -24,26 +26,40 @@ public class Repository {
         return repository;
     }
 
-    boolean loginExist(String login) {
-        User driverWithLogin = drivers.stream().filter(d -> d.getLogin().equals(login)).findAny().orElse(null);
-        User managerWithLogin = managers.stream().filter(m -> m.getLogin().equals(login)).findAny().orElse(null);
-        User clientWithLogin = taxiClients.stream().filter(c -> c.getLogin().equals(login)).findAny().orElse(null);
-        User carsOwnerWithLogin = carsOwners.stream().filter(o -> o.getLogin().equals(login)).findAny().orElse(null);
+    public int getUnusedId(Class<? extends TaxiItem> clazz) {
 
-        return driverWithLogin == null
-                && managerWithLogin == null
-                && clientWithLogin == null
-                && carsOwnerWithLogin == null;
+        // too sad ...
+        if (Order.class.equals(clazz)) {
+            return orderRepository.getUnusedId();
+        } else if (TaxiClient.class.equals(clazz)) {
+            return clientRepository.getUnusedId();
+        } else if (CV.class.equals(clazz)) {
+            return CVRepository.getUnusedId();
+        } else if (Driver.class.equals(clazz)) {
+            return driverRepository.getUnusedId();
+        } else if (Manager.class.equals(clazz)) {
+            return managerRepository.getUnusedId();
+        } else if (Car.class.equals(clazz)) {
+            return carRepository.getUnusedId();
+        } else if (CarsOwner.class.equals(clazz)) {
+            return ownerRepository.getUnusedId();
+        }
+        throw new IllegalArgumentException("Unexpected clazz value");
     }
 
-    public List<Driver> getDrivers() {
-        return drivers;
+    public List<Driver> getOnlineDrivers() {
+        return driverRepository.getOnlineUsers();
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public List<Manager> getOnlineManagers() {
+        return managerRepository.getOnlineUsers();
     }
 
-//    public
+    public List<CarsOwner> getOnlineCarsOwner() {
+        return ownerRepository.getOnlineUsers();
+    }
 
+    public List<TaxiClient> getOnlineTaxiClients() {
+        return clientRepository.getOnlineUsers();
+    }
 }

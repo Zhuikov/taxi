@@ -1,26 +1,20 @@
 package core;
 
-public class Car {
+public class Car extends TaxiItem {
 
     private final String licensePlate;
-    private final CarsOwner owner;
     private boolean used = false;
 
-    public Car(String licensePlate, CarsOwner owner) {
+    public Car(int id, String licensePlate, CarsOwner owner) {
+        super(id);
 
         if (!licensePlate.matches("[ABEKMHOPCTYX]\\d{3}[ABEKMHOPCTYX]{2}"))
             throw new IllegalArgumentException("Wrong license plate format");
-
         this.licensePlate = licensePlate;
-        this.owner = owner;
     }
 
     public String getLicensePlate() {
         return licensePlate;
-    }
-
-    public CarsOwner getOwner() {
-        return owner;
     }
 
     public boolean isUsed() {

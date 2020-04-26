@@ -5,16 +5,28 @@ import core.Car;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarRepository {
+public class CarRepository extends TaxiItemRepository<Car> {
 
-    private List<Car> cars = new ArrayList<>();
-
-    public List<Car> getAll() {
-        return cars;
+    @Override
+    public Car getById(int id) {
+        // todo go to db
+        return null;
     }
 
-    public void addCar(Car car) {
-        cars.add(car);
+    @Override
+    public void addNew(Car item) {
+        // todo go to db
+    }
+
+    @Override
+    public int getUnusedId() {
+        // todo go to db
+        return 0;
+    }
+
+    public List<Car> getCarsByOwner(int ownerId) {
+        // todo go to bd
+        return new ArrayList<>();
     }
 
 }

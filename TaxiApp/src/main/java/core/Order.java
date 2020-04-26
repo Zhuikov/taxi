@@ -1,19 +1,26 @@
 package core;
 
-public class Order {
+public class Order extends TaxiItem {
 
-    private final String address;
+    private final String dstAddress;
+    private final String srcAddress;
     private final TaxiClient taxiClient;
-    private OrderStatus status;
+    private Driver driver = null;
+    private OrderStatus status = OrderStatus.WAIT_FOR_DRIVER;
 
-    public Order(String address, TaxiClient taxiClient) {
-        this.address = address;
+    public Order(int id, String srcAddress, String dstAddress, TaxiClient taxiClient) {
+        super(id);
+        this.srcAddress = srcAddress;
+        this.dstAddress = dstAddress;
         this.taxiClient = taxiClient;
-        this.status = OrderStatus.WAIT_FOR_DRIVER;
     }
 
-    public String getAddress() {
-        return address;
+    public String getDstAddress() {
+        return dstAddress;
+    }
+
+    public String getSrcAddress() {
+        return srcAddress;
     }
 
     public TaxiClient getTaxiClient() {
@@ -26,5 +33,13 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 }

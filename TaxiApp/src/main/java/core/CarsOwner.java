@@ -1,9 +1,9 @@
 package core;
 
-public class CarsOwner extends User{
+public class CarsOwner extends User {
 
-    public CarsOwner(String login, PersonInfo personInfo) {
-        super(login, personInfo);
+    public CarsOwner(int id, String login, PersonInfo personInfo) {
+        super(id, login, personInfo, UserRole.OWNER);
     }
 
 }

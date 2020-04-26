@@ -4,11 +4,13 @@ public class Driver extends User {
 
     private DriverStatus status = DriverStatus.FREE;
     private Car car;
+    // check it when login
+    private boolean active = true;
     private Order order = null;
     private Order newOrder = null;
 
-    public Driver(String login, PersonInfo personInfo, Car car) {
-        super(login, personInfo);
+    public Driver(int id, String login, PersonInfo personInfo, Car car) {
+        super(id, login, personInfo, UserRole.DRIVER);
         this.car = car;
     }
 
@@ -23,10 +25,6 @@ public class Driver extends User {
     public Order getOrder() {
         return order;
     }
-
-//    public void setStatus(DriverStatus status) {
-//        this.status = status;
-//    }
 
     public void setCar(Car car) {
         this.car.setUsed(false);
@@ -72,6 +70,8 @@ public class Driver extends User {
     public void finishOrder() {
         if (order != null) {
             order.setStatus(OrderStatus.FINISHED);
+            // todo update order in db
+            // repository.updateOrder(order);
             order = null;
             status = DriverStatus.FREE;
         }

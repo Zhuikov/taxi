@@ -2,8 +2,8 @@ package core;
 
 public class Manager extends User {
 
-    public Manager(String login, PersonInfo personInfo) {
-        super(login, personInfo);
+    public Manager(int id, String login, PersonInfo personInfo) {
+        super(id, login, personInfo, UserRole.MANAGER);
     }
 
     public void sendOrder(Driver driver, Order order) {

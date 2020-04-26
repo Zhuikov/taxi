@@ -13,10 +13,10 @@ class OrderTest {
 
     @BeforeEach
     private void initFields() {
-        driver = new Driver("driver1", new PersonInfo("FirstName",
-                "SecondName", "8-888-888-88-88"), new Car("P233AB", owner));
-        order = new Order("Address1",
-                new TaxiClient("client1",
+        driver = new Driver(0, "driver1", new PersonInfo("FirstName",
+                "SecondName", "8-888-888-88-88"), new Car(10,"P233AB", owner));
+        order = new Order(1, "Address1", "Address2",
+                new TaxiClient(2, "client1",
                         new PersonInfo("ClientName", "ClientSecondName", "9-999-999-99-99")));
     }
 
@@ -31,6 +31,7 @@ class OrderTest {
         Assertions.assertEquals(driver.getOrder(), order);
         Assertions.assertEquals(driver.getStatus(), DriverStatus.BUSY);
         Assertions.assertEquals(order.getStatus(), OrderStatus.ACCEPTED);
+        Assertions.assertEquals(order.getDriver(), driver);
 
         driver.finishOrder();
         Assertions.assertNull(driver.getOrder());
@@ -40,8 +41,9 @@ class OrderTest {
 
     @Test
     public void twoOrdersOneDriverTest() {
-        Order order2 = new Order("Address2", new TaxiClient("client2",
-                new PersonInfo("Name", "sName", "22222222")));
+        Order order2 = new Order(3, "Address2", "Address3",
+                new TaxiClient(4, "client2",
+                        new PersonInfo("Name", "sName", "22222222")));
         Assertions.assertTrue(driver.setNewOrder(order));
         Assertions.assertEquals(driver.getStatus(), DriverStatus.FREE);
         Assertions.assertFalse(driver.setNewOrder(order));
@@ -51,6 +53,7 @@ class OrderTest {
         Assertions.assertFalse(driver.acceptOrder());
         Assertions.assertEquals(driver.getStatus(), DriverStatus.BUSY);
         Assertions.assertEquals(order.getStatus(), OrderStatus.ACCEPTED);
+        Assertions.assertEquals(order.getDriver(), driver);
 
         Assertions.assertTrue(driver.setNewOrder(order2));
         Assertions.assertEquals(order2.getStatus(), OrderStatus.WAIT_FOR_DRIVER);
@@ -64,6 +67,7 @@ class OrderTest {
         Assertions.assertTrue(driver.acceptOrder());
         Assertions.assertEquals(driver.getStatus(), DriverStatus.BUSY);
         Assertions.assertEquals(order2.getStatus(), OrderStatus.ACCEPTED);
+        Assertions.assertEquals(order2.getDriver(), driver);
 
         driver.finishOrder();
         Assertions.assertEquals(order2.getStatus(), OrderStatus.FINISHED);
@@ -72,8 +76,8 @@ class OrderTest {
 
     @Test
     public void oneOrderTwoDriversTest() {
-        Driver driver2 = new Driver("driver2", new PersonInfo("Test", "Test", "TestPhone"),
-                new Car("B122OX", owner));
+        Driver driver2 = new Driver(5, "driver2", new PersonInfo("Test", "Test", "TestPhone"),
+                new Car(11,"B122OX", owner));
         Assertions.assertTrue(driver.setNewOrder(order));
         Assertions.assertEquals(driver.getStatus(), DriverStatus.FREE);
         Assertions.assertTrue(driver2.setNewOrder(order));
@@ -85,6 +89,7 @@ class OrderTest {
         Assertions.assertEquals(driver2.getStatus(), DriverStatus.FREE);
 
         Assertions.assertEquals(order.getStatus(), OrderStatus.ACCEPTED);
+        Assertions.assertEquals(order.getDriver(), driver);
 
         driver.finishOrder();
         Assertions.assertEquals(order.getStatus(), OrderStatus.FINISHED);
@@ -93,20 +98,20 @@ class OrderTest {
         Assertions.assertEquals(driver2.getStatus(), DriverStatus.FREE);
     }
 
-    @Test
-    public void rejectOrderTwoDriversTest() {
-        Driver driver2 = new Driver("driver2", new PersonInfo("Test", "Test", "TestPhone"),
-                new Car("B122OX", owner));
-        Assertions.assertTrue(driver.setNewOrder(order));
-
-        driver.rejectOrder();
-        Assertions.assertFalse(driver.acceptOrder());
-        Assertions.assertEquals(driver.getStatus(), DriverStatus.FREE);
-
-        Assertions.assertTrue(driver.setNewOrder(order));
-
-
-
-    }
+//    @Test
+//    public void rejectOrderTwoDriversTest() {
+//        Driver driver2 = new Driver("driver2", new PersonInfo("Test", "Test", "TestPhone"),
+//                new Car("B122OX", owner));
+//        Assertions.assertTrue(driver.setNewOrder(order));
+//        Assertions.assertTrue(driver2.setNewOrder(order));
+//
+//        driver.rejectOrder();
+//        Assertions.assertFalse(driver.acceptOrder());
+//        Assertions.assertEquals(driver.getStatus(), DriverStatus.FREE);
+//        Assertions.assertTrue(driver2.acceptOrder());
+//
+//        Assertions.assertTrue(driver.setNewOrder(order));
+//
+//    }
 
 }

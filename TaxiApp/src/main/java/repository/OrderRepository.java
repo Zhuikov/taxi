@@ -5,21 +5,28 @@ import core.OrderStatus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class OrderRepository {
+public class OrderRepository extends TaxiItemRepository<Order> {
 
-    private List<Order> orders = new ArrayList<>();
-
-    public void addOrder(Order order) {
-        orders.add(order);
+    @Override
+    public Order getById(int id) {
+        // todo go to db
+        return null;
     }
 
-    public List<Order> getAll() {
-        return orders;
+    @Override
+    public void addNew(Order item) {
+        // todo go to db
+    }
+
+    @Override
+    public int getUnusedId() {
+        // todo go to db
+        return 0;
     }
 
     public List<Order> getWithStatus(OrderStatus status) {
-        return orders.stream().filter(order -> order.getStatus() == status).collect(Collectors.toList());
+        // todo make specific request to db
+        return new ArrayList<>();
     }
 }

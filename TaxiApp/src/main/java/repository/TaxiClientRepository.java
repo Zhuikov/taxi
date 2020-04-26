@@ -1,19 +1,19 @@
 package repository;
 
-import core.Driver;
+import core.TaxiClient;
 
 import java.util.Optional;
 
-public class DriverRepository extends UserRepository<Driver> {
+public class TaxiClientRepository extends UserRepository<TaxiClient> {
 
     @Override
-    protected void loginUser(Driver user) {
+    protected void loginUser(TaxiClient user) {
         // todo check user's existence in DB
         onlineUsers.add(user);
     }
 
     @Override
-    public void addNew(Driver user) {
+    public void addNew(TaxiClient user) {
         // todo go to DB
     }
 
@@ -24,8 +24,8 @@ public class DriverRepository extends UserRepository<Driver> {
     }
 
     @Override
-    public Driver getById(int id) {
-        Optional<Driver> res = onlineUsers.stream().filter(u -> u.getId() == id).findFirst();
+    public TaxiClient getById(int id) {
+        Optional<TaxiClient> res = onlineUsers.stream().filter(u -> u.getId() == id).findFirst();
         if (res.isPresent())
             return res.get();
 
@@ -34,4 +34,5 @@ public class DriverRepository extends UserRepository<Driver> {
 
         throw new IllegalArgumentException("No user with required id = " + id);
     }
+
 }
