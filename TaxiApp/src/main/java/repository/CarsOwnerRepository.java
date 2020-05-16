@@ -4,34 +4,32 @@ import core.CarsOwner;
 
 import java.util.Optional;
 
+// singleton
 public class CarsOwnerRepository extends UserRepository<CarsOwner> {
 
-    @Override
-    public void loginUser(CarsOwner user) {
-        // todo check user's existence in DB
-        onlineUsers.add(user);
+    private static CarsOwnerRepository carsOwnerRepository = null;
+    private CarsOwnerRepository() {}
+
+    public static CarsOwnerRepository getSingleton() {
+        if (carsOwnerRepository == null)
+            carsOwnerRepository = new CarsOwnerRepository();
+        return carsOwnerRepository;
     }
 
-    @Override
-    public void addNew(CarsOwner user) {
-        // todo go to DB
-    }
+//    @Override
+//    public void loginUser(CarsOwner user) {
+//        // todo check user's existence in DB
+//        users.add(user);
+//    }
 
-    @Override
-    public int getUnusedId() {
-        // go to db
-        return 0;
-    }
+//    @Override
+//    public void addNew(CarsOwner user) {
+//        // todo go to DB
+//    }
 
-    @Override
-    public CarsOwner getById(int id) {
-        Optional<CarsOwner> res = onlineUsers.stream().filter(u -> u.getId() == id).findFirst();
-        if (res.isPresent())
-            return res.get();
-
-        // if user is offline,
-        // todo go to DB
-
-        throw new IllegalArgumentException("No user with required id = " + id);
-    }
+//    @Override
+//    public int getUnusedId() {
+//        // go to db
+//        return 0;
+//    }
 }

@@ -47,19 +47,19 @@ public class Repository {
         throw new IllegalArgumentException("Unexpected clazz value");
     }
 
-    public List<Driver> getOnlineDrivers() {
-        return driverRepository.getOnlineUsers();
+    public List<Driver> getDrivers() {
+        return driverRepository.getAll();
     }
 
-    public List<Manager> getOnlineManagers() {
-        return managerRepository.getOnlineUsers();
+    public List<Manager> getManagers() {
+        return managerRepository.getAll();
     }
 
-    public List<CarsOwner> getOnlineCarsOwner() {
-        return ownerRepository.getOnlineUsers();
+    public List<CarsOwner> getCarsOwner() {
+        return ownerRepository.getAll();
     }
 
-    public List<TaxiClient> getOnlineTaxiClients() {
-        return clientRepository.getOnlineUsers();
+    public List<TaxiClient> getTaxiClients() {
+        return clientRepository.getAll();
     }
 }

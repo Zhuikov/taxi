@@ -4,15 +4,16 @@ public class Order extends TaxiItem {
 
     private final String dstAddress;
     private final String srcAddress;
-    private final TaxiClient taxiClient;
-    private Driver driver = null;
+    private final int taxiClientId;
+    private Integer managerId = null;
+    private Integer driverId = null;
     private OrderStatus status = OrderStatus.WAIT_FOR_DRIVER;
 
-    public Order(int id, String srcAddress, String dstAddress, TaxiClient taxiClient) {
+    public Order(int id, String srcAddress, String dstAddress, int taxiClientId) {
         super(id);
         this.srcAddress = srcAddress;
         this.dstAddress = dstAddress;
-        this.taxiClient = taxiClient;
+        this.taxiClientId = taxiClientId;
     }
 
     public String getDstAddress() {
@@ -23,8 +24,8 @@ public class Order extends TaxiItem {
         return srcAddress;
     }
 
-    public TaxiClient getTaxiClient() {
-        return taxiClient;
+    public int getTaxiClientId() {
+        return taxiClientId;
     }
 
     public OrderStatus getStatus() {
@@ -35,11 +36,19 @@ public class Order extends TaxiItem {
         this.status = status;
     }
 
-    public Driver getDriver() {
-        return driver;
+    public Integer getDriverId() {
+        return driverId;
     }
 
-    public void setDriver(Driver driver) {
-        this.driver = driver;
+    public void setDriverId(Integer driverId) {
+        this.driverId = driverId;
+    }
+
+    public Integer getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
     }
 }

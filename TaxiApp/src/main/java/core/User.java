@@ -1,6 +1,7 @@
 package core;
 
-import java.util.ArrayList;
+import repository.MessageRepository;
+
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -9,12 +10,12 @@ abstract public class User extends TaxiItem {
     protected final String login;
     protected final PersonInfo personInfo;
     protected final UserRole role;
-    protected boolean online = false;
-    protected List<Message> messages = new ArrayList<>();
+    protected final MessageRepository messageRepository = MessageRepository.getSingleton();
     protected Consumer<Message> messageProcessFunction =
             message -> {
-                String text = "Message " + message.getType() + " from " + message.getSender();
+                String text = "Message " + message.getType() + " from " + message.getSenderRole();
                 System.out.println(text);
+                message.setRead(true);
     };
 
     public User(int id, String login, PersonInfo personInfo, UserRole role) {
@@ -24,8 +25,18 @@ abstract public class User extends TaxiItem {
         this.role = role;
     }
 
-    public void setMessageProcessFunction(Consumer<Message> messageProcessFunction) {
-        this.messageProcessFunction = messageProcessFunction;
+    /**
+     * Returns all 'isRead' messages for user using user.id
+     */
+    public List<Message> getMessagesByUser(boolean isRead) {
+        return messageRepository.getUserMessages(id, isRead);
+    }
+
+    /**
+     * Returns all 'isRead' messages for user using user.role
+     */
+    public List<Message> getMessagesByRole(boolean isRead) {
+        return messageRepository.getRoleMessages(role, isRead);
     }
 
     public String getLogin() {
@@ -36,18 +47,8 @@ abstract public class User extends TaxiItem {
         return personInfo;
     }
 
-    public boolean isOnline() {
-        return online;
-    }
-
-    public void setOnline(boolean online) {
-        this.online = online;
-    }
-
-    public void addMessage(Message message) {
-        assert (message.getRecipientId() == id);
-        messages.add(message);
-        messageProcessFunction.accept(message);
+    public void setMessageProcessFunction(Consumer<Message> messageProcessFunction) {
+        this.messageProcessFunction = messageProcessFunction;
     }
 
     @Override

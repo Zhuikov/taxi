@@ -1,15 +1,46 @@
 package repository;
 
+import Exceptions.NoEntityException;
 import core.TaxiItem;
 
-// This repos are for CVs, Cars and Orders
-// they doesnt store items in List<T> but ask DB for it
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class TaxiItemRepository<T extends TaxiItem> {
 
-    abstract public T getById(int id);
+    protected List<T> entities = new ArrayList<>();
+    // todo ask DB in specific constructor
+    protected int unusedId = 0;
 
-    abstract public void addNew(T item);
+    public List<T> getAll() {
+        return entities;
+    }
 
-    abstract public int getUnusedId();
+    public T getById(int id) throws NoEntityException {
+        return entities.stream()
+                .filter(e -> e.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new NoEntityException(id));
+    }
+
+    public void add(T entity) {
+        entities.add(entity);
+    }
+
+    public boolean updateEntity(T entity) {
+        // todo do anything with 'for'
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i).getId() == entity.getId()) {
+                entities.set(i, entity);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public int getUnusedId() {
+        return unusedId++;
+    }
 
 }
