@@ -26,10 +26,10 @@ abstract public class User extends TaxiItem {
     }
 
     /**
-     * Returns all 'isRead' messages for user using user.id
+     * Returns all 'withUnread' messages for user using user.id
      */
-    public List<Message> getMessagesByUser(boolean isRead) {
-        return messageRepository.getUserMessages(id, isRead);
+    public List<Message> getMessagesByUser(boolean withUnread) {
+        return messageRepository.getUserMessages(id, role, withUnread);
     }
 
     /**
@@ -45,6 +45,10 @@ abstract public class User extends TaxiItem {
 
     public PersonInfo getPersonInfo() {
         return personInfo;
+    }
+
+    public void processMessage(Message message) {
+        messageProcessFunction.accept(message);
     }
 
     public void setMessageProcessFunction(Consumer<Message> messageProcessFunction) {

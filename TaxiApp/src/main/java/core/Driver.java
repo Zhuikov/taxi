@@ -59,10 +59,14 @@ public class Driver extends User {
     public void finishOrder(Order order) {
 
         order.setStatus(OrderStatus.FINISHED);
-        orderRepository.updateEntity(order);
 
         this.order = null;
         this.status = DriverStatus.FREE;
+    }
+
+    public void assignOrder(Order order) {
+        status = DriverStatus.BUSY;
+        this.order = order;
     }
 
     public void setActive(boolean active) {

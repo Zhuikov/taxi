@@ -8,7 +8,6 @@ public class Manager extends User {
 
     private final OrderRepository orderRepository = OrderRepository.getSingleton();
     private final DriverRepository driverRepository = DriverRepository.getSingleton();
-//    private TaxiClientRepository taxiClientRepository = TaxiClientRepository.getSingleton();
 
     public Manager(int id, String login, PersonInfo personInfo) {
         super(id, login, personInfo, UserRole.MANAGER);
@@ -22,7 +21,6 @@ public class Manager extends User {
         if (order.getManagerId() != null)
             return false;
         order.setManagerId(id);
-        orderRepository.updateEntity(order);
         return true;
     }
 
@@ -48,7 +46,6 @@ public class Manager extends User {
 
         order.setDriverId(driver.getId());
         order.setStatus(OrderStatus.ACCEPTED);
-        orderRepository.updateEntity(order);
 
         Message message = new Message(
                 messageRepository.getUnusedId(), id, role, driver.id,
@@ -76,9 +73,9 @@ public class Manager extends User {
     /**
      * Sends ACK message to client for order
      */
-    public void sendReplyToClient(Order order, TaxiClient client, MessageType type) {
+    public void sendReplyToClient(Order order, int clientId, MessageType type) {
         Message message = new Message(
-                messageRepository.getUnusedId(), id, role, client.getId(),
+                messageRepository.getUnusedId(), id, role, clientId,
                 UserRole.CLIENT, type, order.getId()
         );
         messageRepository.add(message);
@@ -92,7 +89,6 @@ public class Manager extends User {
     public void setDriverActivity(int driverId) throws NoEntityException {
         Driver driver = driverRepository.getById(driverId);
         driver.setActive(true);
-        driverRepository.updateEntity(driver);
     }
 
 }

@@ -18,17 +18,20 @@ public class MessageRepository extends TaxiItemRepository<Message>{
         return messageRepository;
     }
 
-    public List<Message> getUserMessages(int userId, boolean isRead) {
-        return entities
-                .stream()
-                .filter(message -> message.getRecipientId() == userId && message.isRead() == isRead)
+    public List<Message> getUserMessages(int userId, UserRole userRole, boolean withUnread) {
+        return entities.stream()
+                .filter(message -> message.getRecipientId() != null &&
+                        message.getRecipientId() == userId &&
+                        message.getRecipientRole() == userRole &&
+                        (withUnread || !message.isRead()))
                 .collect(Collectors.toList());
     }
 
-    public List<Message> getRoleMessages(UserRole role, boolean isRead) {
-        return entities
-                .stream()
-                .filter(message ->  message.getRecipientRole() == role && message.isRead() == isRead && message.getRecipientId() == null)
+    public List<Message> getRoleMessages(UserRole role, boolean withUnread) {
+        return entities.stream()
+                .filter(message -> message.getRecipientRole() == role &&
+                        (withUnread || !message.isRead()) &&
+                        message.getRecipientId() == null)
                 .collect(Collectors.toList());
     }
 

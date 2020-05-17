@@ -37,7 +37,7 @@ public class Message extends TaxiItem {
         return type;
     }
 
-    public Object getDataId() {
+    public int getDataId() {
         return dataId;
     }
 

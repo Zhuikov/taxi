@@ -8,7 +8,6 @@ import repository.TaxiClientRepository;
 
 public class CarsOwner extends User {
 
-    private static final String driverLoginPrefix  = "driver";
     private final DriverRepository driverRepository = DriverRepository.getSingleton();
     private final TaxiClientRepository taxiClientRepository = TaxiClientRepository.getSingleton();
     private final CarRepository carRepository = CarRepository.getSingleton();

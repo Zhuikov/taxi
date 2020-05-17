@@ -27,16 +27,8 @@ public abstract class TaxiItemRepository<T extends TaxiItem> {
         entities.add(entity);
     }
 
-    public boolean updateEntity(T entity) {
-        // todo do anything with 'for'
-        for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i).getId() == entity.getId()) {
-                entities.set(i, entity);
-                return true;
-            }
-        }
-
-        return false;
+    public void removeAll() {
+        entities.clear();
     }
 
     public int getUnusedId() {
