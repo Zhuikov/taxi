@@ -6,7 +6,7 @@ public class CV extends TaxiItem {
     private final int experience;
 
     public CV(int id, int userId, int experience) {
-        super(id);
+//        super(id);
         this.userId = userId;
         this.experience = experience;
     }

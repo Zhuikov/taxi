@@ -1,19 +1,39 @@
 package core;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "Orders")
 public class Order extends TaxiItem {
 
+    @Column
     private final String dstAddress;
+
+    @Column
     private final String srcAddress;
-    private final int taxiClientId;
-    private Integer managerId = null;
-    private Integer driverId = null;
+
+//    @ManyToOne
+//    @JoinColumn(name = "id_client")
+//    private final TaxiClient taxiClient;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "id_driver")
+//    private Driver driver = null;
+
+    @Enumerated
+    @Column(name = "status", columnDefinition = "smallint")
     private OrderStatus status = OrderStatus.WAIT_FOR_DRIVER;
 
-    public Order(int id, String srcAddress, String dstAddress, int taxiClientId) {
-        super(id);
+    public Order() {
+        this.srcAddress = "";
+        this.dstAddress = "";
+//        this.taxiClient = taxiClient;
+    }
+
+    public Order(String srcAddress, String dstAddress, TaxiClient taxiClient) {
         this.srcAddress = srcAddress;
         this.dstAddress = dstAddress;
-        this.taxiClientId = taxiClientId;
+//        this.taxiClient = taxiClient;
     }
 
     public String getDstAddress() {
@@ -24,10 +44,6 @@ public class Order extends TaxiItem {
         return srcAddress;
     }
 
-    public int getTaxiClientId() {
-        return taxiClientId;
-    }
-
     public OrderStatus getStatus() {
         return status;
     }
@@ -36,19 +52,4 @@ public class Order extends TaxiItem {
         this.status = status;
     }
 
-    public Integer getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(Integer driverId) {
-        this.driverId = driverId;
-    }
-
-    public Integer getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Integer managerId) {
-        this.managerId = managerId;
-    }
 }

@@ -37,21 +37,21 @@ public class Driver extends User {
         if (this.order != null || status != DriverStatus.FREE) {
             return false;
         }
-        Message message = new Message(
-                messageRepository.getUnusedId(), id, role, order.getManagerId(),
-                UserRole.MANAGER, MessageType.ACK, order.id
-        );
-        messageRepository.add(message);
+//        Message message = new Message(
+//                messageRepository.getUnusedId(), id, role, order.getManagerId(),
+//                UserRole.MANAGER, MessageType.ACK, order.id
+//        );
+//        messageRepository.add(message);
 
         return true;
     }
 
     public boolean rejectOrder(Order order) {
-        Message message = new Message(
-                messageRepository.getUnusedId(), id, role, order.getManagerId(),
-                UserRole.MANAGER, MessageType.NACK, order.id
-        );
-        messageRepository.add(message);
+//        Message message = new Message(
+//                messageRepository.getUnusedId(), id, role, order.getManagerId(),
+//                UserRole.MANAGER, MessageType.NACK, order.id
+//        );
+//        messageRepository.add(message);
 
         return true;
     }

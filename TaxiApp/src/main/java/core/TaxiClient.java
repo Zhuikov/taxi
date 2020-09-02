@@ -12,18 +12,18 @@ public class TaxiClient extends User {
         super(id, login, personInfo, UserRole.CLIENT);
     }
 
-    public Order createOrder(String srcAddress, String dstAddress) {
-        return new Order(orderRepository.getUnusedId(), srcAddress, dstAddress, id);
-    }
+//    public Order createOrder(String srcAddress, String dstAddress) {
+//        return new Order(orderRepository.getUnusedId(), srcAddress, dstAddress, id);
+//    }
 
     public boolean sendOrder(Order order) {
         // todo try-catch
-        orderRepository.add(order);
-        Message message = new Message(
-                messageRepository.getUnusedId(), id, role, null,
-                UserRole.MANAGER, MessageType.ORDER, order.getId()
-        );
-        messageRepository.add(message);
+//        orderRepository.add(order);
+//        Message message = new Message(
+//                messageRepository.getUnusedId(), id, role, null,
+//                UserRole.MANAGER, MessageType.ORDER, order.getId()
+//        );
+//        messageRepository.add(message);
         return true;
     }
 

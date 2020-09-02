@@ -19,7 +19,7 @@ abstract public class User extends TaxiItem {
     };
 
     public User(int id, String login, PersonInfo personInfo, UserRole role) {
-        super(id);
+//        super(id);
         this.login = login;
         this.personInfo = personInfo;
         this.role = role;

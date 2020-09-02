@@ -1,13 +1,14 @@
 package core;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 abstract public class TaxiItem {
-    protected final int id;
 
-    public int getId() {
-        return id;
-    }
-
-    public TaxiItem(int id) {
-        this.id = id;
-    }
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    protected int id;
 }

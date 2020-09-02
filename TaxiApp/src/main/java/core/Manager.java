@@ -18,9 +18,9 @@ public class Manager extends User {
      * Returns false if order has managerId already
      */
     public boolean assignOrder(Order order) {
-        if (order.getManagerId() != null)
-            return false;
-        order.setManagerId(id);
+//        if (order.getManagerId() != null)
+//            return false;
+//        order.setManagerId(id);
         return true;
     }
 
@@ -41,10 +41,10 @@ public class Manager extends User {
      * Returns false if order has driverId already
      */
     public boolean setDriverToOrder(Order order, Driver driver) {
-        if (order.getDriverId() != null)
-            return false;
-
-        order.setDriverId(driver.getId());
+//        if (order.getDriverId() != null)
+//            return false;
+//
+//        order.setDriverId(driver.getId());
         order.setStatus(OrderStatus.ACCEPTED);
 
         Message message = new Message(
@@ -61,11 +61,11 @@ public class Manager extends User {
      * Use it when several drivers sent ACK for one order
      */
     public boolean rejectDriverToOrder(Order order, Driver driver) {
-        Message message = new Message(
-                messageRepository.getUnusedId(), id, role, driver.getId(),
-                UserRole.DRIVER, MessageType.NACK, order.getId()
-        );
-        messageRepository.add(message);
+//        Message message = new Message(
+//                messageRepository.getUnusedId(), id, role, driver.getId(),
+//                UserRole.DRIVER, MessageType.NACK, order.getId()
+//        );
+//        messageRepository.add(message);
 
         return true;
     }
@@ -74,11 +74,11 @@ public class Manager extends User {
      * Sends ACK message to client for order
      */
     public void sendReplyToClient(Order order, int clientId, MessageType type) {
-        Message message = new Message(
-                messageRepository.getUnusedId(), id, role, clientId,
-                UserRole.CLIENT, type, order.getId()
-        );
-        messageRepository.add(message);
+//        Message message = new Message(
+//                messageRepository.getUnusedId(), id, role, clientId,
+//                UserRole.CLIENT, type, order.getId()
+//        );
+//        messageRepository.add(message);
     }
 
     /**
@@ -87,8 +87,8 @@ public class Manager extends User {
      */
     // todo maybe use Driver driver instead of driverId
     public void setDriverActivity(int driverId) throws NoEntityException {
-        Driver driver = driverRepository.getById(driverId);
-        driver.setActive(true);
+//        Driver driver = driverRepository.getById(driverId);
+//        driver.setActive(true);
     }
 
 }

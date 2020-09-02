@@ -6,7 +6,7 @@ public class Car extends TaxiItem {
     private boolean used = false;
 
     public Car(int id, String licensePlate, CarsOwner owner) {
-        super(id);
+//        super(id);
 
         if (!licensePlate.matches("[ABEKMHOPCTYX]\\d{3}[ABEKMHOPCTYX]{2}"))
             throw new IllegalArgumentException("Wrong license plate format");

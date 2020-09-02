@@ -16,12 +16,12 @@ public abstract class TaxiItemRepository<T extends TaxiItem> {
         return entities;
     }
 
-    public T getById(int id) throws NoEntityException {
-        return entities.stream()
-                .filter(e -> e.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new NoEntityException(id));
-    }
+//    public T getById(int id) throws NoEntityException {
+//        return entities.stream()
+//                .filter(e -> e.getId() == id)
+//                .findFirst()
+//                .orElseThrow(() -> new NoEntityException(id));
+//    }
 
     public void add(T entity) {
         entities.add(entity);

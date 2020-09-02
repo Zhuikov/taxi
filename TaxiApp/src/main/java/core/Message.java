@@ -12,7 +12,7 @@ public class Message extends TaxiItem {
 
     public Message(int id, int senderId, UserRole senderRole, Integer recipientId,
                    UserRole recipientRole, MessageType type, int dataId) {
-        super(id);
+//        super(id);
         this.senderId = senderId;
         this.senderRole = senderRole;
         this.recipientRole = recipientRole;
