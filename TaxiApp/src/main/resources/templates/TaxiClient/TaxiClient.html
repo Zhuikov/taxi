@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TaxiClient</title>
+</head>
+<body>
+
+<div>
+    <h2> You are logged in as client </h2>
+</div>
+<br>
+
+<div>
+    <h2> Order </h2>
+    <form>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Source Address"><br>
+            <input type="text" class="form-control" placeholder="Destination Address">
+        </div>
+    </form>
+    <br>
+    <div class="submit">
+        <button type="submit" name="create" value="create">Create</button>
+    </div>
+</div>
+
+<div>
+    <h2> CV </h2>
+    <div>
+        <form>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Person</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Name"><br>
+                <input type="text" class="form-control" placeholder="Surname"><br>
+                <input type="text" class="form-control" placeholder="Phone"><br>
+                <input type="number" class="form-control" placeholder="Experience">
+            </div>
+        </form>
+        <br>
+        <div class="submit">
+            <button type="submit" name="Submit" value="submit">Submit</button>
+        </div>
+    </div>
+</div>
+
+<div class="clientMessages" th:unless="${#lists.isEmpty(messages)}">
+
+    <h2>Messages</h2>
+
+<!--    <table>-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>From:</th>-->
+<!--            <th>Type:</th>-->
+<!--            <th>Content:</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="order : ${orderDataList}">-->
+<!--            <td th:text="${{order.id}}">0</td>-->
+<!--            <td th:text="${{order.cargoWeight}}">0</td>-->
+<!--            <td th:text="${#strings.concat('(', order.cargoLength, ', ', order.cargoWidth, ', ', order.cargoHeight, ')')}">0</td>-->
+<!--            <td th:text="${{order.loadingAddress}}"></td>-->
+<!--            <td th:text="${{order.shippingAddress}}"></td>-->
+<!--            <td th:text="${{order.orderState}}"></td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+</div>
+
+
+
+</body>
+</html>

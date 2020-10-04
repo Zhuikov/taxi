@@ -7,8 +7,8 @@ import java.util.List;
 // Singleton
 public class Repository {
 
-//    private static Repository repository = null;
-//
+    private static Repository repository = null;
+
 ////    private final static UserRepository<Driver> driverRepository     = new DriverRepository();
 ////    private final static UserRepository<Manager> managerRepository   = new ManagerRepository();
 ////    private final static UserRepository<TaxiClient> clientRepository = new TaxiClientRepository();
@@ -17,15 +17,15 @@ public class Repository {
 ////    private final static OrderRepository orderRepository             = new OrderRepository();
 ////    private final static CarRepository carRepository                 = new CarRepository();
 ////    private final static CVRepository CVRepository                   = new CVRepository();
-//
-//    private Repository() {}
-//
-//    public static Repository getInstance() {
-//        if (repository == null)
-//            repository = new Repository();
-//        return repository;
-//    }
-//
+
+    private Repository() {}
+
+    public static Repository getInstance() {
+        if (repository == null)
+            repository = new Repository();
+        return repository;
+    }
+
 //    public int getUnusedId(Class<? extends TaxiItem> clazz) {
 //
 //        // too sad ...

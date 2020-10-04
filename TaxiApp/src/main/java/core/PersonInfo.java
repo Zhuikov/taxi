@@ -1,10 +1,20 @@
 package core;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class PersonInfo {
 
     private final String name;
     private final String surname;
     private final String phone;
+
+    public PersonInfo() {
+        name = "";
+        surname = "";
+        phone = "";
+    }
 
     public PersonInfo(String name, String surname, String phone) {
         this.name = name;

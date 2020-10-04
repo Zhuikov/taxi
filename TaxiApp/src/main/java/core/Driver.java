@@ -1,19 +1,26 @@
 package core;
 
-import repository.OrderRepository;
+//import repository.OrderRepository;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "Drivers")
 public class Driver extends User {
 
-    private final OrderRepository orderRepository = OrderRepository.getSingleton();
+//    private final OrderRepository orderRepository = OrderRepository.getSingleton();
 
     private DriverStatus status = DriverStatus.FREE;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_car", referencedColumnName = "id")
     private Car car;
     // todo check it when login
+    @Column
     private boolean active = false;
-    private Order order = null;
+//    private Order order = null;
 
     public Driver(int id, String login, PersonInfo personInfo, Car car) {
-        super(id, login, personInfo, UserRole.DRIVER);
+        super(login, personInfo, UserRole.DRIVER);
         this.car = car;
     }
 
@@ -25,18 +32,18 @@ public class Driver extends User {
         return car;
     }
 
-    public Order getOrder() {
-        return order;
-    }
+//    public Order getOrder() {
+//        return order;
+//    }
 
     public void setCar(Car car) {
         this.car = car;
     }
 
     public boolean acceptOrder(Order order) {
-        if (this.order != null || status != DriverStatus.FREE) {
-            return false;
-        }
+//        if (this.order != null || status != DriverStatus.FREE) {
+//            return false;
+//        }
 //        Message message = new Message(
 //                messageRepository.getUnusedId(), id, role, order.getManagerId(),
 //                UserRole.MANAGER, MessageType.ACK, order.id
@@ -60,13 +67,13 @@ public class Driver extends User {
 
         order.setStatus(OrderStatus.FINISHED);
 
-        this.order = null;
+//        this.order = null;
         this.status = DriverStatus.FREE;
     }
 
     public void assignOrder(Order order) {
         status = DriverStatus.BUSY;
-        this.order = order;
+//        this.order = order;
     }
 
     public void setActive(boolean active) {

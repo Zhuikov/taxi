@@ -5,12 +5,20 @@
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.password">root</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/taxi_db</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/taxi_db2?serverTimezone=UTC</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">create</property>
-        <mapping class="core.Order"/>
+        <mapping class="taxiApp.core.Order"/>
+        <mapping class="taxiApp.core.CV"/>
+        <mapping class="taxiApp.core.User"/>
+        <mapping class="taxiApp.core.CarsOwner"/>
+        <mapping class="taxiApp.core.Car"/>
+        <mapping class="taxiApp.core.Driver"/>
+        <mapping class="taxiApp.core.Manager"/>
+        <mapping class="taxiApp.core.TaxiClient"/>
+        <mapping class="taxiApp.core.Message"/>
     </session-factory>
 </hibernate-configuration>

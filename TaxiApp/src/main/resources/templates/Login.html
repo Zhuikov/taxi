@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+
+<div>
+    <h2>Login</h2>
+
+    <form action="#" th:action="@{/login}" method="post">
+
+        <fieldset>
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Login"><br>
+        </div>
+
+        <br>
+
+        <div class="submit">
+            <button type="submit" name="Submit" value="submit">Submit</button>
+        </div>
+
+        </fieldset>
+
+    </form>
+</div>
+
+</body>
+</html>

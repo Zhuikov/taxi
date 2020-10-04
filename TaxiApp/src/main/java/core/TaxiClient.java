@@ -1,15 +1,22 @@
 package core;
 
 import repository.CVRepository;
-import repository.OrderRepository;
 
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+//import repository.OrderRepository;
+
+@Entity
+@Table(name = "Clients")
+@PrimaryKeyJoinColumn(name = "id_user")
 public class TaxiClient extends User {
 
-    private final OrderRepository orderRepository = OrderRepository.getSingleton();
-    private final CVRepository cvRepository = CVRepository.getSingleton();
+//    private final OrderRepository orderRepository = OrderRepository.getSingleton();
+//    private final CVRepository cvRepository = CVRepository.getInstance();
 
-    public TaxiClient(int id, String login, PersonInfo personInfo) {
-        super(id, login, personInfo, UserRole.CLIENT);
+    public TaxiClient(String login, PersonInfo personInfo) {
+        super(login, personInfo, UserRole.CLIENT);
     }
 
 //    public Order createOrder(String srcAddress, String dstAddress) {
@@ -27,19 +34,19 @@ public class TaxiClient extends User {
         return true;
     }
 
-    public CV createCV(int experience) {
-        return new CV(cvRepository.getUnusedId(), id, experience);
-    }
+//    public CV createCV(int experience) {
+//        return new CV(cvRepository.getUnusedId(), id, experience);
+//    }
 
-    public boolean sendCV(CV cv) {
-        // todo try-catch
-        cvRepository.add(cv);
-        Message message = new Message(
-                messageRepository.getUnusedId(), id, role, null,
-                UserRole.OWNER, MessageType.CV, cv.id
-        );
-        messageRepository.add(message);
-        return true;
-    }
+//    public boolean sendCV(CV cv) {
+//        // todo try-catch
+//        cvRepository.add(cv);
+//        Message message = new Message(
+//                messageRepository.getUnusedId(), id, role, null,
+//                UserRole.OWNER, MessageType.CV, cv.id
+//        );
+//        messageRepository.add(message);
+//        return true;
+//    }
 
 }

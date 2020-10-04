@@ -1,8 +1,12 @@
 package repository;
 
-import Exceptions.NoUnusedCarsException;
+import Exceptions.NoEntityException;
 import core.Car;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,41 +14,35 @@ import java.util.List;
 public class CarRepository extends TaxiItemRepository<Car> {
 
     private static CarRepository carRepository = null;
+
+    private static final String INSERT_STMT =
+            "insert into Cars id_owner, license_plate, model values (?,?,?)";
+
     private CarRepository() {}
 
-    public static CarRepository getSingleton() {
+    public static CarRepository getInstance() {
         if (carRepository == null)
             carRepository = new CarRepository();
         return carRepository;
     }
 
-    public Car getUnusedCar() throws NoUnusedCarsException {
-        return entities.stream()
-                .filter(e -> !e.isUsed())
-                .findFirst()
-                .orElseThrow(NoUnusedCarsException::new);
+    @Override
+    public long add(Car entity) {
+        return 0;
     }
 
-//    @Override
-//    public Car getById(int id) {
-//        // todo go to db
-//        return null;
-//    }
+    @Override
+    public void deleteById(int entity) {
 
-//    @Override
-//    public void addNew(Car item) {
-//        // todo go to db
-//    }
-
-//    @Override
-//    public int getUnusedId() {
-//        // todo go to db
-//        return 0;
-//    }
-
-    public List<Car> getCarsByOwner(int ownerId) {
-        // todo go to bd
-        return new ArrayList<>();
     }
 
+    @Override
+    public Car getById(int id) throws NoEntityException {
+        return null;
+    }
+
+    @Override
+    public void update(Car entity) {
+
+    }
 }

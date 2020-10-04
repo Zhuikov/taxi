@@ -3,18 +3,20 @@ package repository;
 import Exceptions.NoEntityException;
 import core.TaxiItem;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TaxiItemRepository<T extends TaxiItem> {
 
-    protected List<T> entities = new ArrayList<>();
-    // todo ask DB in specific constructor
-    protected int unusedId = 0;
+    static final protected String URL = "jdbc:mysql://localhost:3306/taxi_db?serverTimezone=UTC";
+    static final protected String USER = "root";
+    static final protected String PASS = "root";
 
-    public List<T> getAll() {
-        return entities;
-    }
+    protected Connection connection = null;
+
+//    abstract public List<T> getAll();
 
 //    public T getById(int id) throws NoEntityException {
 //        return entities.stream()
@@ -23,16 +25,14 @@ public abstract class TaxiItemRepository<T extends TaxiItem> {
 //                .orElseThrow(() -> new NoEntityException(id));
 //    }
 
-    public void add(T entity) {
-        entities.add(entity);
-    }
+    abstract public long add(T entity);
 
-    public void removeAll() {
-        entities.clear();
-    }
+    abstract public void deleteById(int entity);
 
-    public int getUnusedId() {
-        return unusedId++;
-    }
+    abstract public T getById(int id) throws NoEntityException;
+
+    abstract public void update(T entity);
+
+//    public void removeAll() {}
 
 }

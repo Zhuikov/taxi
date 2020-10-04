@@ -1,0 +1,11 @@
+package taxiApp.springapp.repos;
+
+import taxiApp.core.Manager;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+public interface ManagerRepository extends CrudRepository<Manager, Long> {
+    List<Manager> findAll();
+    Manager findByLogin(String login);
+}

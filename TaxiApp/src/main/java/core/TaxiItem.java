@@ -9,6 +9,14 @@ import javax.persistence.MappedSuperclass;
 abstract public class TaxiItem {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    protected int id;
+    @GeneratedValue
+    protected long id = 0;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

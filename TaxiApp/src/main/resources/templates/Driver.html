@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Driver</title>
+</head>
+<style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 5px;
+      text-align: left;
+    }
+</style>
+<body>
+
+<div>
+    <h2> You are logged in as driver </h2>
+    <p th:text="name">--</p>
+</div>
+<br>
+
+<div class="driverMessages" th:unless="${#lists.isEmpty(driverMessages)}">
+    <h2> Messages </h2>
+    <table>
+        <thead>
+        <tr>
+            <th>From</th>
+            <th>Content</th>
+            <th>Payload</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="message : ${driverMessages}">
+            <td th:text="${{message.from}}">--</td>
+            <td th:text="${{message.type}}">--</td>
+            <td th:text="${{message.payload}}">--</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<br>
+<div>
+    <div class="submit">
+        <button type="submit" name="ACK" value="submit">Accept Order</button>
+        <button type="submit" name="NACK" value="submit">Decline Order</button>
+    </div>
+</div>
+
+    <div class="currentOrder" th:if="${currentOrder}">
+    <h2> Current order </h2>
+    <table>
+        <tr>
+            <th>Source:</th>
+            <td th:text="${currentOrder.srcAddress}">--</td>
+        </tr>
+        <tr>
+            <th>Destination:</th>
+            <td th:text="${currentOrder.dstAddress}">--</td>
+        </tr>
+    </table>
+</div>
+
+<br>
+
+<div>
+    <button type="submit" name="Finish" value="submit">Finish Order</button>
+</div>
+
+</body>
+</html>
