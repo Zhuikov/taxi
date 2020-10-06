@@ -55,8 +55,7 @@ public class DriverService extends UserService {
         return driver.getOrder();
     }
 
-    public void processOrder(Long id, boolean isAck) {
-        Driver driver = driverRepository.findById(id).get();
+    public void processOrder(Driver driver, boolean isAck) {
         List<Manager> managers = managerRepository.findAll();
         for (Manager m : managers) {
             Message message = new Message(driver, m, isAck ? MessageType.ACK : MessageType.NACK, null);
@@ -64,9 +63,8 @@ public class DriverService extends UserService {
         }
     }
 
-    public void finishOrder(Long idDriver, Long idOrder) {
+    public void finishOrder(Driver driver, Long idOrder) {
         Order order = orderRepository.findById(idOrder).get();
-        Driver driver = driverRepository.findById(idDriver).get();
         order.setStatus(OrderStatus.FINISHED);
         driver.setOrder(null);
         driver.setStatus(DriverStatus.FREE);
@@ -74,18 +72,12 @@ public class DriverService extends UserService {
         orderRepository.save(order);
     }
 
-    public void setOrder(Long idDriver, Long idOrder) {
+    public void setOrder(Driver driver, Long idOrder) {
         Order order = orderRepository.findById(idOrder).get();
-        Driver driver = driverRepository.findById(idDriver).get();
         order.setStatus(OrderStatus.ACCEPTED);
         driver.setOrder(order);
         driver.setStatus(DriverStatus.BUSY);
         driverRepository.save(driver);
         orderRepository.save(order);
     }
-
-//    public List<Message> getMessages(Long id) {
-//        return messageRepository.findByUserId(id);
-//    }
-
 }

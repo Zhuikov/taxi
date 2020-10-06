@@ -17,6 +17,13 @@ public class Message extends TaxiItem {
     private final MessageType type;
     private final Long payload;
 
+    public Message() {
+        sender = null;
+        recipient = null;
+        type = MessageType.ACK;
+        payload = -1L;
+    }
+
     public Message(User sender, User recipient, MessageType type, Long payload) {
         this.sender = sender;
         this.recipient = recipient;

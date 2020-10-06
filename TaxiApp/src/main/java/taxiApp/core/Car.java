@@ -15,9 +15,6 @@ public class Car extends TaxiItem {
     private final String model;
 
     public Car(String licensePlate, CarsOwner owner, String model) {
-        // TODO correct regex
-//        if (!licensePlate.matches("[ABEKMHOPCTYX]\\d{3}[ABEKMHOPCTYX]{2}"))
-//            throw new IllegalArgumentException("Wrong license plate format");
         this.licensePlate = licensePlate;
         this.owner = owner;
         this.model = model;

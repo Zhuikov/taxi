@@ -1,14 +1,17 @@
 package taxiApp.springapp.controllers.html;
 
-import taxiApp.core.Driver;
-import taxiApp.core.Message;
-import taxiApp.core.Order;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import taxiApp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import taxiApp.springapp.services.DriverService;
+import taxiApp.springapp.services.representations.MessageRepresentation;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 
@@ -26,12 +29,47 @@ public class DriverHtmlController {
     public String ui(Principal principal, Model model) {
         String login = principal.getName();
         Driver driver = driverService.getByLogin(login);
-        List<Message> messages = driverService.getMessages(driver);
+        fillModel(driver, model);
+        return "Driver";
+    }
+
+    @GetMapping({"/{isAck}"})
+    public String ackOrder(Principal principal, @PathVariable String isAck, Model model) {
+        String login = principal.getName();
+        Driver driver = driverService.getByLogin(login);
+        driverService.processOrder(driver, isAck.equals("ACK"));
+        fillModel(driver, model);
+        return "Driver";
+    }
+
+    @PostMapping("/finish")
+    public String finishOrder(Principal principal, HttpServletRequest request, Model model) {
+        String login = principal.getName();
+        Driver driver = driverService.getByLogin(login);
+        Long idOrder = Long.parseLong(request.getParameter("idOrder"));
+        driverService.finishOrder(driver, idOrder);
+        fillModel(driver, model);
+        model.addAttribute("orderFinished", true);
+        return "Driver";
+    }
+
+    @PostMapping("/set")
+    public String setOrder(Principal principal, HttpServletRequest request, Model model) {
+        String login = principal.getName();
+        Driver driver = driverService.getByLogin(login);
+        Long idOrder = Long.parseLong(request.getParameter("idOrder"));
+        driverService.setOrder(driver, idOrder);
+        fillModel(driver, model);
+        model.addAttribute("orderSet", true);
+        return "Driver";
+    }
+
+    private void fillModel(Driver driver, Model model) {
+        List<MessageRepresentation> messages = driverService.getMessagesRepr(driver);
         Order order = driverService.getOrder(driver.getId());
         model.addAttribute("name", driver.getPersonInfo().toString());
         model.addAttribute("driverMessages", messages);
         model.addAttribute("currentOrder", order);
-        return "Driver";
     }
 
 }

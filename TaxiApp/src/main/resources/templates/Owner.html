@@ -1,18 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <title>Owner</title>
 </head>
+<style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 5px;
+      text-align: left;
+    }
+</style>
+
 <body>
 
 <div>
     <h2> You are logged in as owner </h2>
+    <h2 th:text="${name}">--</h2>
 </div>
 <br>
 
+<div class="carList" th:unless="${#lists.isEmpty(cars)}">
+    <h2> Cars </h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>License Plate</th>
+            <th>Model</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="car : ${cars}">
+            <td th:text="${{car.id}}">--</td>
+            <td th:text="${{car.licensePlate}}">--</td>
+            <td th:text="${{car.model}}">--</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
+<div class="ownerMessages" th:unless="${#lists.isEmpty(ownerMessages)}">
+    <h2> Messages </h2>
+    <table>
+        <thead>
+        <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Content</th>
+            <th>Payload</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="message : ${ownerMessages}">
+            <td th:text="${{message.from}}">--</td>
+            <td th:text="${{message.to}}">--</td>
+            <td th:text="${{message.type}}">--</td>
+            <td th:text="${{message.payload}}">--</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
+<div class="CVs" th:unless="${#lists.isEmpty(CVs)}">
+    <h2> CVs </h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Phone</th>
+            <th>Experience</th>
+            <th>Answered</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cv : ${CVs}">
+            <td th:text="${{cv.name}}">--</td>
+            <td th:text="${{cv.surname}}">--</td>
+            <td th:text="${{cv.phone}}">--</td>
+            <td th:text="${{cv.experience}}">--</td>
+            <td th:text="${{cv.shown}}">--</td>
+            <td>
+                <form th:unless="${cv.shown}" th:action="@{'/owner/cv/{cvId}/nack'(cvId=${cv.id})}" method="get">
+                    <button>-</button>
+                </form>
+            </td>
+            <td>
+                <form th:unless="${cv.shown}" th:action="@{'/owner/cv/{cvId}/ack'(cvId=${cv.id})}" method="post">
+                    <fieldset>
+                        <input type="number" name="carId" placeholder="Car id"/>
+                        <div class="submit"><button>+</button></div>
+                    </fieldset>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

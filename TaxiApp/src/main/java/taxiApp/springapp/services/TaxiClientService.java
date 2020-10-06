@@ -9,6 +9,10 @@ import taxiApp.springapp.repos.CVRepository;
 import taxiApp.springapp.repos.MessageRepository;
 import taxiApp.springapp.repos.OrderRepository;
 import taxiApp.springapp.repos.TaxiClientRepository;
+import taxiApp.springapp.services.representations.OrderRepresentation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TaxiClientService extends UserService {
@@ -31,6 +35,14 @@ public class TaxiClientService extends UserService {
 
     public TaxiClient getById(Long id) {
         return clientRepository.findById(id).get();
+    }
+
+    public List<OrderRepresentation> getClientsOrders(TaxiClient client) {
+        List<Order> orders = orderRepository.findByTaxiClient(client);
+        List<OrderRepresentation> result = new ArrayList<>();
+        for (Order o : orders)
+            result.add(new OrderRepresentation(o));
+        return result;
     }
 
     public Order addOrder(Order order) {

@@ -24,27 +24,27 @@ public class CarsOwnerController {
 
 //    @GetMapping("/{id}")
 //    CarsOwner getById(@PathVariable Long id) { return ownerService.getById(id); }
+//
+//    @GetMapping("/messages")
+//    List<Message> getMessages(Principal principal) {
+//        String login = principal.getName();
+//        CarsOwner owner = ownerService.getByLogin(login);
+//        return ownerService.getMessages(owner);
+//    }
+//
+//    @GetMapping("/cars")
+//    List<Car> getCars(Principal principal) {
+//        String login = principal.getName();
+//        CarsOwner owner = ownerService.getByLogin(login);
+//        return ownerService.getCars(owner);
+//    }
 
-    @GetMapping("/messages")
-    List<Message> getMessages(Principal principal) {
-        String login = principal.getName();
-        CarsOwner owner = ownerService.getByLogin(login);
-        return ownerService.getMessages(owner);
-    }
-
-    @GetMapping("/cars")
-    List<Car> getCars(Principal principal) {
-        String login = principal.getName();
-        CarsOwner owner = ownerService.getByLogin(login);
-        return ownerService.getCars(owner.getId());
-    }
-
-    @GetMapping("/cv/{cvId}/nack")
-    void nackCV(Principal principal, @PathVariable Long cvId) {
-        String login = principal.getName();
-        CarsOwner owner = ownerService.getByLogin(login);
-        ownerService.nackCV(owner.getId(), cvId);
-    }
+//    @GetMapping("/cv/{cvId}/nack")
+//    void nackCV(Principal principal, @PathVariable Long cvId) {
+//        String login = principal.getName();
+//        CarsOwner owner = ownerService.getByLogin(login);
+//        ownerService.nackCV(owner.getId(), cvId);
+//    }
 
     @GetMapping("/cv/{cvId}/ack/{carId}")
     void ackCV(Principal principal, @PathVariable Long cvId, @PathVariable Long carId) {

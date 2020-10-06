@@ -34,8 +34,12 @@ public class CarsOwnerService extends UserService {
         return ownerRepository.findByLogin(login);
     }
 
-    public List<Car> getCars(Long ownerId) {
-        return carRepository.findAllByOwner(ownerId);
+    public List<Car> getCars(CarsOwner owner) {
+        return carRepository.findAllByOwner(owner);
+    }
+
+    public List<CV> getCVs() {
+        return cvRepository.findAll();
     }
 
     public void nackCV(Long id, Long cvId) {

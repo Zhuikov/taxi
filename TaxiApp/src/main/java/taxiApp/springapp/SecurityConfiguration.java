@@ -13,7 +13,7 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+//        http
 //                .authorizeRequests()
 //                .antMatchers("/client/**").hasAnyRole("CLIENT")
 //                .antMatchers("/api/client/").hasAnyRole("CLIENT")
@@ -22,10 +22,15 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/manager/**").hasAnyRole("MANAGER")
 //                .antMatchers("/api/manager/**").hasAnyRole("MANAGER")
 //                .and()
-                .httpBasic()
-                .and()
-                .formLogin()
-                .loginPage("/login");
+//                .httpBasic()
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+////                .failureUrl("/login-error")
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/login")
+//                ;
     }
 
 //    @Autowired

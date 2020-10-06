@@ -14,6 +14,13 @@ public class MessageRepositoryImpl extends CrudRepositoryImpl<Message> implement
     @Override
     public List<Message> findBySender(User user) {
         return items.stream().
+                filter(message -> Objects.equals(message.getSender().getId(), user.getId()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Message> findByRecipient(User user) {
+        return items.stream().
                 filter(message -> Objects.equals(message.getRecipient().getId(), user.getId()))
                 .collect(Collectors.toList());
     }

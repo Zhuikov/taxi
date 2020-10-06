@@ -1,6 +1,5 @@
 package taxiApp.springapp.controllers;
 
-import taxiApp.core.CarsOwner;
 import taxiApp.core.Driver;
 import taxiApp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,21 +36,21 @@ public class DriverController {
     void ackOrder(Principal principal, @PathVariable String isAck) {
         String login = principal.getName();
         Driver driver = driverService.getByLogin(login);
-        driverService.processOrder(driver.getId(), isAck.equals("ACK"));
+        driverService.processOrder(driver, isAck.equals("ACK"));
     }
 
     @GetMapping("/finish/{idOrder}")
     void finishOrder(Principal principal, @PathVariable Long idOrder) {
         String login = principal.getName();
         Driver driver = driverService.getByLogin(login);
-        driverService.finishOrder(driver.getId(), idOrder);
+        driverService.finishOrder(driver, idOrder);
     }
 
     @GetMapping("/set/{idOrder}")
     void setOrder(Principal principal, @PathVariable Long idOrder) {
         String login = principal.getName();
         Driver driver = driverService.getByLogin(login);
-        driverService.setOrder(driver.getId(), idOrder);
+        driverService.setOrder(driver, idOrder);
     }
 
 }

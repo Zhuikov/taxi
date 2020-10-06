@@ -10,8 +10,9 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "id_user")
 public class TaxiClient extends User {
 
-//    private final OrderRepository orderRepository = OrderRepository.getSingleton();
-//    private final CVRepository cvRepository = CVRepository.getInstance();
+    public TaxiClient() {
+        super();
+    }
 
     public TaxiClient(String login, PersonInfo personInfo) {
         super(login, personInfo);

@@ -10,18 +10,20 @@
 <div>
     <h2>Login</h2>
 
+    <p th:if="${loginError}" class="error">Wrong login</p>
+
     <form action="#" th:action="@{/login}" method="post">
 
         <fieldset>
 
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Login"><br>
+            <input type="text" class="form-control" name="login" placeholder="Login"><br>
         </div>
 
         <br>
 
         <div class="submit">
-            <button type="submit" name="Submit" value="submit">Submit</button>
+            <button>Submit</button>
         </div>
 
         </fieldset>

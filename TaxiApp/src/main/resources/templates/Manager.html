@@ -1,68 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <title>Manager</title>
 </head>
+<style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 5px;
+      text-align: left;
+    }
+</style>
 <body>
 
 <div>
     <h2> You are logged in as manager </h2>
+    <h2 th:text="${name}">--</h2>
 </div>
 <br>
 
+<div class="managerMessages" th:unless="${#lists.isEmpty(managerMessages)}">
+    <h2> Messages </h2>
+    <table>
+        <thead>
+        <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Content</th>
+            <th>Payload</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="message : ${managerMessages}">
+            <td th:text="${{message.from}}">--</td>
+            <td th:text="${{message.to}}">--</td>
+            <td th:text="${{message.type}}">--</td>
+            <td th:text="${{message.payload}}">--</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="orderList" th:unless="${#lists.isEmpty(orderList)}">
+    <h2> Order List </h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Client Id</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orderList}">
+            <td th:text="${{order.id}}">--</td>
+            <td th:text="${{order.clientId}}">--</td>
+            <td th:text="${{order.srcAddress}}">--</td>
+            <td th:text="${{order.dstAddress}}">--</td>
+            <td th:text="${{order.status}}">--</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="driverList" th:unless="${#lists.isEmpty(driverList)}">
+    <h2> Driver List </h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Phone</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="driver : ${driverList}">
+            <td th:text="${{driver.id}}">--</td>
+            <td th:text="${{driver.name}}">--</td>
+            <td th:text="${{driver.surname}}">--</td>
+            <td th:text="${{driver.phone}}">--</td>
+            <td th:text="${{driver.status}}">--</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 <div>
     <h2> Order </h2>
-    <form>
-        <div class="input-group mb-3">
-            <input type="number" class="form-control" placeholder="Driver Id"><br>
-            <input type="number" class="form-control" placeholder="Order Id">
-        </div>
+    <form th:action="@{/manager/order/driver}" method="post">
+        <fieldset>
+            <div class="input-group mb-3">
+                <input type="number" name="sendDriverId" class="form-control" placeholder="Driver Id"><br>
+                <input type="number" name="sendOrderId" class="form-control" placeholder="Order Id">
+            </div>
+            <button type="submit">Send</button>
+        </fieldset>
     </form>
-    <br>
-    <button type="submit" name="Send" value="submit">Send</button>
 </div>
 
 <div>
     <h2> Driver </h2>
 
-    <form>
-        <div class="input-group mb-3">
-            <input type="number" class="form-control" placeholder="Driver Id"><br>
-        </div>
+    <form th:action="@{/manager/driver/ACK}" method="post">
+        <fieldset>
+            <input type="number" name="driverId" class="form-control" placeholder="Driver Id"><br>
+            <div class="submit"><button>Accept Order</button></div>
+        </fieldset>
     </form>
-    <br>
-    <div class="submit">
-        <button type="submit" name="ACK" value="submit">Accept Order</button>
-        <button type="submit" name="NACK" value="submit">Decline Order</button>
-    </div>
+    <form th:action="@{/manager/driver/NACK}" method="post">
+        <fieldset>
+            <input type="number" name="driverId" class="form-control" placeholder="Driver Id"><br>
+            <div class="submit"><button>Decline Order</button></div>
+        </fieldset>
+    </form>
 </div>
 
 <div>
     <h2> Client </h2>
-
-    <form>
-        <div class="input-group mb-3">
-            <input type="number" class="form-control" placeholder="Client Id"><br>
-        </div>
-    </form>
-    <br>
     <div class="submit">
-        <button type="submit" name="ACK" value="submit">Accept Order</button>
-        <button type="submit" name="NACK" value="submit">Decline Order</button>
+        <form th:action="@{/manager/client/ACK}" method="post">
+            <fieldset>
+                <input type="number" name="orderId" placeholder="Order id"/>
+                <div class="submit"><button>Accept Order</button></div>
+            </fieldset>
+        </form>
+        <form th:action="@{/manager/client/NACK}" method="post">
+            <fieldset>
+                <input type="number" name="orderId" placeholder="Order id"/>
+                <div class="submit"><button>Decline Order</button></div>
+            </fieldset>
+        </form>
     </div>
 </div>
 
 <div>
     <h2> Driver activation </h2>
 
-    <form>
-        <div class="input-group mb-3">
-            <input type="number" class="form-control" placeholder="Driver Id"><br>
-        </div>
+    <form th:action="@{/manager/activate}" method="post">
+        <fieldset>
+            <input type="number" name="activateDriverId" placeholder="Driver id"/>
+            <div class="submit"><button>Activate</button></div>
+        </fieldset>
+        <p th:if="${activationSuccess}">Activated</p>
     </form>
-    <br>
-    <button type="submit" name="Activate" value="submit">Activate</button>
 </div>
 
 </body>

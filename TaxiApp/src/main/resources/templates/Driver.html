@@ -19,7 +19,7 @@
 
 <div>
     <h2> You are logged in as driver </h2>
-    <p th:text="name">--</p>
+    <h2 th:text="${name}">--</h2>
 </div>
 <br>
 
@@ -29,6 +29,7 @@
         <thead>
         <tr>
             <th>From</th>
+            <th>To</th>
             <th>Content</th>
             <th>Payload</th>
         </tr>
@@ -36,6 +37,7 @@
         <tbody>
         <tr th:each="message : ${driverMessages}">
             <td th:text="${{message.from}}">--</td>
+            <td th:text="${{message.to}}">--</td>
             <td th:text="${{message.type}}">--</td>
             <td th:text="${{message.payload}}">--</td>
         </tr>
@@ -45,10 +47,21 @@
 
 <br>
 <div>
-    <div class="submit">
-        <button type="submit" name="ACK" value="submit">Accept Order</button>
-        <button type="submit" name="NACK" value="submit">Decline Order</button>
-    </div>
+    <form th:action="@{/driver/ACK}" method="get">
+        <button>Accept Order</button>
+    </form>
+    <form th:action="@{/driver/NACK}" method="get">
+        <button>Decline Order</button>
+    </form><br>
+    <form th:action="@{/driver/set}" method="post">
+        <fieldset>
+            <input name="idOrder" type="number" placeholder="Order Id"><br>
+            <div class="submit">
+                <button>Set Order</button>
+            </div>
+        </fieldset>
+    </form>
+    <p th:if="${orderSet}">Order successfully set</p>
 </div>
 
     <div class="currentOrder" th:if="${currentOrder}">
@@ -63,12 +76,23 @@
             <td th:text="${currentOrder.dstAddress}">--</td>
         </tr>
     </table>
+    </div>
 </div>
 
 <br>
 
 <div>
-    <button type="submit" name="Finish" value="submit">Finish Order</button>
+    <div class="currentOrder" th:if="${currentOrder}">
+    <form th:action="@{/driver/finish}" method="post">
+        <fieldset>
+            <input type="hidden" name="idOrder" th:value="${currentOrder.id}"/>
+            <div class="submit">
+                <button>Finish Order</button>
+            </div>
+        </fieldset>
+    </form>
+    </div>
+    <p th:if="${orderFinished}">Successfully finished</p>
 </div>
 
 </body>

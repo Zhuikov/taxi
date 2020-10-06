@@ -12,12 +12,9 @@ import javax.persistence.*;
 @PrimaryKeyJoinColumn(name = "id_user")
 public class Manager extends User {
 
-//    @Id
-//    @GeneratedValue(strategy=GenerationType.IDENTITY)
-//    private long managerId;
-
-//    private final OrderRepository orderRepository = OrderRepository.getSingleton();
-//    private final DriverRepository driverRepository = DriverRepository.getSingleton();
+    public Manager() {
+        super();
+    }
 
     public Manager(String login, PersonInfo personInfo) {
         super(login, personInfo);

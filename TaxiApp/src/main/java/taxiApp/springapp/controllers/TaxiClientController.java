@@ -28,7 +28,6 @@ public class TaxiClientController {
         return clientService.getMessages(client);
     }
 
-    // todo info mapping
     @PostMapping("/order")
     Order addOrder(@RequestBody Order order) {
         return clientService.addOrder(order);

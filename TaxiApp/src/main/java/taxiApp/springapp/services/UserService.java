@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import taxiApp.core.User;
 import taxiApp.springapp.repos.MessageRepository;
+import taxiApp.springapp.services.representations.MessageRepresentation;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -18,10 +21,21 @@ public class UserService {
     }
 
     public List<Message> getMessages(User user) {
-        return messageRepository.findBySender(user);
+        List<Message> messages = messageRepository.findBySender(user);
+        messages.addAll(messageRepository.findByRecipient(user));
+        return messages;
     }
 
     public void addMessage(Message message) {
         messageRepository.save(message);
+    }
+
+    public List<MessageRepresentation> getMessagesRepr(User user) {
+        List <MessageRepresentation> res = new ArrayList<>();
+        for (Message m : getMessages(user)) {
+            res.add(new MessageRepresentation(m));
+        }
+        Collections.sort(res);
+        return res;
     }
 }

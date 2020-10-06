@@ -4,7 +4,10 @@ import taxiApp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import taxiApp.springapp.repos.*;
+import taxiApp.springapp.services.representations.DriverRepresentation;
+import taxiApp.springapp.services.representations.OrderRepresentation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,19 +32,30 @@ public class ManagerService extends UserService {
         return managerRepository.findByLogin(login);
     }
 
-//    public Manager getById(Long managerId) { return managerRepository.findById(managerId).get(); }
+    public List<DriverRepresentation> getDrivers() {
+        List<Driver> drivers = driverRepository.findAll();
+        List<DriverRepresentation> result = new ArrayList<>();
+        for (Driver d : drivers)
+            if (d.isActive())
+                result.add(new DriverRepresentation(d));
+        return result;
+    }
 
-    public List<Driver> getDrivers() { return driverRepository.findAll(); }
+    public List<OrderRepresentation> getOrders() {
+        List<Order> orders = orderRepository.findAll();
+        List<OrderRepresentation> result = new ArrayList<>();
+        for (Order o : orders)
+            result.add(new OrderRepresentation(o));
+        return result;
+    }
 
-    public void sendOrderToDriver(Long id, Long orderId, Long idDriver) {
-        Manager manager = managerRepository.findById(id).get();
+    public void sendOrderToDriver(Manager manager, Long orderId, Long idDriver) {
         Driver driver = driverRepository.findById(idDriver).get();
         Message message = new Message(manager, driver, MessageType.ORDER, orderId);
         messageRepository.save(message);
     }
 
-    public void sendAnswerToClient(Long id, Long orderId, boolean isAck) {
-        Manager manager = managerRepository.findById(id).get();
+    public void sendAnswerToClient(Manager manager, Long orderId, boolean isAck) {
         Order order = orderRepository.findById(orderId).get();
         TaxiClient client = clientRepository.findById(order.getTaxiClient().getId()).get();
         order.setStatus(isAck ? OrderStatus.ACCEPTED : OrderStatus.DECLINED);
@@ -50,8 +64,7 @@ public class ManagerService extends UserService {
         orderRepository.save(order);
     }
 
-    public void sendAnswerToDriver(Long id, Long driverId, boolean isAck) {
-        Manager manager = managerRepository.findById(id).get();
+    public void sendAnswerToDriver(Manager manager, Long driverId, boolean isAck) {
         Driver driver = driverRepository.findById(driverId).get();
         Message message = new Message(manager, driver, isAck ? MessageType.ACK : MessageType.NACK, null);
         messageRepository.save(message);

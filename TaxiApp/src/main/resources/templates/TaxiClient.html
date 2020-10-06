@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TaxiClient</title>
+</head>
+<style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 5px;
+      text-align: left;
+    }
+</style>
+<body>
+
+<div>
+    <h2> You are logged in as client </h2>
+    <h2 th:text="${name}">--</h2>
+</div>
+
+<div>
+    <h2> Create Order </h2>
+
+    <form action="#" th:action="@{/client/order}" method="post">
+
+        <fieldset>
+            <div class="input-group mb-3">
+                <input type="text" name="srcAddress" class="form-control" placeholder="Source Address"><br>
+                <input type="text" name="dstAddress" class="form-control" placeholder="Destination Address">
+            </div>
+        </fieldset>
+        <br>
+        <div class="submit">
+            <button>Create</button>
+        </div>
+    </form>
+</div>
+
+<div>
+    <h2> Create CV </h2>
+
+    <div>
+        <form action="#" th:action="@{/client/cv}" method="post">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Person</span>
+                </div>
+                <input type="text" name="cv_name" class="form-control" placeholder="Name"><br>
+                <input type="text" name="cv_surname" class="form-control" placeholder="Surname"><br>
+                <input type="text" name="cv_phone" class="form-control" placeholder="Phone"><br>
+                <input type="number" name="cv_exp" class="form-control" placeholder="Experience">
+            </div>
+        <br>
+        <div class="submit">
+            <button>Submit</button>
+        </div>
+        </form>
+
+        <p th:if="${cvSuccess}" class="error">Success</p>
+    </div>
+</div>
+
+<div class="clientMessages" th:unless="${#lists.isEmpty(clientMessages)}">
+
+    <h2>Messages</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Content</th>
+            <th>Payload</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="message : ${clientMessages}">
+            <td th:text="${{message.from}}">--</td>
+            <td th:text="${{message.to}}">--</td>
+            <td th:text="${{message.type}}">--</td>
+            <td th:text="${{message.payload}}">--</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div class="clientOrders" th:unless="${#lists.isEmpty(clientOrders)}">
+
+    <h2>Orders</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${clientOrders}">
+            <td th:text="${{order.id}}">--</td>
+            <td th:text="${{order.srcAddress}}">--</td>
+            <td th:text="${{order.dstAddress}}">--</td>
+            <td th:text="${{order.status}}">--</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+</html>
