@@ -36,6 +36,12 @@ public class TaxiClientHtmlController {
     public String addOrder(Principal principal, Model model, HttpServletRequest request) {
         String login = principal.getName();
         TaxiClient client = clientService.getByLogin(login);
+        if (request.getParameter("srcAddress").isEmpty()) {
+            return handleError(client, model, "Fill source address!");
+        }
+        if (request.getParameter("dstAddress").isEmpty()) {
+            return handleError(client, model, "Fill destination address!");
+        }
         Order order = new Order(request.getParameter("srcAddress"), request.getParameter("dstAddress"), client);
         clientService.addOrder(order);
         fillModel(client, model);
@@ -46,6 +52,9 @@ public class TaxiClientHtmlController {
     public String addCV(Principal principal, Model model, HttpServletRequest request) {
         String login = principal.getName();
         TaxiClient client = clientService.getByLogin(login);
+        if (request.getParameter("cv_name").isEmpty() || request.getParameter("cv_surname").isEmpty()
+                || request.getParameter("cv_phone").isEmpty() || request.getParameter("cv_exp").isEmpty())
+            return handleError(client, model, "Fill all CV fields!");
         CV cv = new CV(client.getId(), request.getParameter("cv_name"), request.getParameter("cv_surname"),
                 request.getParameter("cv_phone"), Integer.parseInt(request.getParameter("cv_exp")), false);
         clientService.addCV(cv);
@@ -60,5 +69,11 @@ public class TaxiClientHtmlController {
         model.addAttribute("name", client.getPersonInfo().toString());
         model.addAttribute("clientMessages", messages);
         model.addAttribute("clientOrders", orders);
+    }
+
+    private String handleError(TaxiClient client, Model model, String errorMsg) {
+        fillModel(client, model);
+        model.addAttribute("errorMsg", errorMsg);
+        return "TaxiClient";
     }
 }

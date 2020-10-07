@@ -22,7 +22,8 @@
     <h2> You are logged in as owner </h2>
     <h2 th:text="${name}">--</h2>
 </div>
-<br>
+
+<h2 th:if="${errorMsg}" th:text="${errorMsg}">--</h2>
 
 <div class="carList" th:unless="${#lists.isEmpty(cars)}">
     <h2> Cars </h2>
@@ -44,8 +45,8 @@
     </table>
 </div>
 
+<h2> Messages </h2>
 <div class="ownerMessages" th:unless="${#lists.isEmpty(ownerMessages)}">
-    <h2> Messages </h2>
     <table>
         <thead>
         <tr>

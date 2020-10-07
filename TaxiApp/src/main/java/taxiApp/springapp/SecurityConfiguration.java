@@ -13,31 +13,5 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/client/**").hasAnyRole("CLIENT")
-//                .antMatchers("/api/client/").hasAnyRole("CLIENT")
-//                .antMatchers("/driver/**").hasAnyRole("DRIVER")
-//                .antMatchers("/api/driver/**").hasAnyRole("DRIVER")
-//                .antMatchers("/manager/**").hasAnyRole("MANAGER")
-//                .antMatchers("/api/manager/**").hasAnyRole("MANAGER")
-//                .and()
-//                .httpBasic()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-////                .failureUrl("/login-error")
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/login")
-//                ;
     }
-
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication().withUser("manager").password("{noop}manager123").roles("MANAGER");
-//        auth.inMemoryAuthentication().withUser("driver").password("{noop}driver123").roles("DRIVER");
-//        auth.inMemoryAuthentication().withUser("client").password("{noop}client123").roles("CLIENT");
-//    }
-
 }

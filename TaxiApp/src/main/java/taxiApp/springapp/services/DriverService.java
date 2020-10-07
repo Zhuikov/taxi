@@ -1,5 +1,6 @@
 package taxiApp.springapp.services;
 
+import taxiApp.Exceptions.NoEntityException;
 import taxiApp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import taxiApp.springapp.repos.MessageRepository;
 import taxiApp.springapp.repos.OrderRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DriverService extends UserService {
@@ -25,30 +27,9 @@ public class DriverService extends UserService {
         this.driverRepository = driverRepository;
     }
 
-    public String getName(Long id) {
-        Driver driver = driverRepository.findById(id).get();
-        return driver.getPersonInfo().toString();
-    }
-
     public Driver getByLogin(String login) {
         return driverRepository.findByLogin(login);
     }
-
-//    public Driver getById(Long id) {
-//        return driverRepository.findById(id).get();
-//    }
-
-    // todo method for manager
-//    public List<Order> getOrders(Long id) {
-//        List<Message> orderMessages = messageRepository.findByUserId(id)
-//                .stream()
-//                .filter(message -> message.getType() == MessageType.ORDER)
-//                .collect(Collectors.toList());
-//        List<Order> orders = new ArrayList<>();
-//        for (Message message : orderMessages)
-//            orders.add(orderRepository.findById(message.getPayload()).get());
-//        return orders;
-//    }
 
     public Order getOrder(Long id) {
         Driver driver = driverRepository.findById(id).get();
@@ -63,21 +44,25 @@ public class DriverService extends UserService {
         }
     }
 
-    public void finishOrder(Driver driver, Long idOrder) {
-        Order order = orderRepository.findById(idOrder).get();
-        order.setStatus(OrderStatus.FINISHED);
+    public void finishOrder(Driver driver, Long idOrder) throws NoEntityException {
+        Optional<Order> order = orderRepository.findById(idOrder);
+        if (!order.isPresent())
+            throw new NoEntityException(idOrder);
+        order.get().setStatus(OrderStatus.FINISHED);
         driver.setOrder(null);
         driver.setStatus(DriverStatus.FREE);
         driverRepository.save(driver);
-        orderRepository.save(order);
+        orderRepository.save(order.get());
     }
 
-    public void setOrder(Driver driver, Long idOrder) {
-        Order order = orderRepository.findById(idOrder).get();
-        order.setStatus(OrderStatus.ACCEPTED);
-        driver.setOrder(order);
+    public void setOrder(Driver driver, Long idOrder) throws NoEntityException {
+        Optional<Order> order = orderRepository.findById(idOrder);
+        if (!order.isPresent())
+            throw new NoEntityException(idOrder);
+        order.get().setStatus(OrderStatus.ACCEPTED);
+        driver.setOrder(order.get());
         driver.setStatus(DriverStatus.BUSY);
         driverRepository.save(driver);
-        orderRepository.save(order);
+        orderRepository.save(order.get());
     }
 }

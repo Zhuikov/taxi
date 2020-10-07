@@ -26,10 +26,6 @@ public class UserService {
         return messages;
     }
 
-    public void addMessage(Message message) {
-        messageRepository.save(message);
-    }
-
     public List<MessageRepresentation> getMessagesRepr(User user) {
         List <MessageRepresentation> res = new ArrayList<>();
         for (Message m : getMessages(user)) {

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import taxiApp.Exceptions.CarIsUsingException;
+import taxiApp.Exceptions.NoEntityException;
 import taxiApp.core.CV;
 import taxiApp.core.Car;
 import taxiApp.core.CarsOwner;
@@ -39,7 +41,11 @@ public class CarsOwnerHtmlController {
     public String nackCV(Principal principal, @PathVariable Long cvId, Model model) {
         String login = principal.getName();
         CarsOwner owner = ownerService.getByLogin(login);
-        ownerService.nackCV(owner.getId(), cvId);
+        try {
+            ownerService.nackCV(owner, cvId);
+        } catch (NoEntityException e) {
+            return handleError(owner, model, e.getMessage());
+        }
         fillModel(owner, model);
         return "Owner";
     }
@@ -48,8 +54,16 @@ public class CarsOwnerHtmlController {
     public String ackCV(Principal principal, @PathVariable Long cvId, HttpServletRequest request, Model model) {
         String login = principal.getName();
         CarsOwner owner = ownerService.getByLogin(login);
+        if (request.getParameter("carId").isEmpty())
+            return handleError(owner, model, "Car id is empty!");
         Long carId = Long.parseLong(request.getParameter("carId"));
-        ownerService.ackCV(owner.getId(), cvId, carId);
+        try {
+            ownerService.ackCV(owner, cvId, carId);
+        } catch (NoEntityException e) {
+            return handleError(owner, model, e.getMessage());
+        } catch (CarIsUsingException e) {
+            return handleError(owner, model, "Car " + e.getCar() + " is using by " + e.getDriver().getPersonInfo().toString());
+        }
         fillModel(owner, model);
         return "Owner";
     }
@@ -62,5 +76,11 @@ public class CarsOwnerHtmlController {
         model.addAttribute("ownerMessages", messages);
         model.addAttribute("cars", cars);
         model.addAttribute("CVs", cvs);
+    }
+
+    private String handleError(CarsOwner owner, Model model, String errorMsg) {
+        fillModel(owner, model);
+        model.addAttribute("errorMsg", errorMsg);
+        return "Owner";
     }
 }

@@ -7,8 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import taxiApp.Exceptions.NoEntityException;
+import taxiApp.core.Driver;
 import taxiApp.core.Manager;
-import taxiApp.core.Order;
 import taxiApp.springapp.services.representations.DriverRepresentation;
 import taxiApp.springapp.services.ManagerService;
 import taxiApp.springapp.services.representations.MessageRepresentation;
@@ -40,8 +41,14 @@ public class ManagerHtmlController {
     public String sendAnswerToClient(Principal principal, HttpServletRequest request, @PathVariable String isAck, Model model) {
         String login = principal.getName();
         Manager manager = managerService.getByLogin(login);
+        if (request.getParameter("orderId").isEmpty())
+            return handleError(manager, model, "Order id is empty!");
         Long orderId = Long.parseLong(request.getParameter("orderId"));
-        managerService.sendAnswerToClient(manager, orderId, isAck.equals("ACK"));
+        try {
+            managerService.sendAnswerToClient(manager, orderId, isAck.equals("ACK"));
+        } catch (NoEntityException e) {
+            return handleError(manager, model, e.getMessage());
+        }
         fillModel(manager, model);
         return "Manager";
     }
@@ -50,8 +57,14 @@ public class ManagerHtmlController {
     public String sendAnswerToDriver(Principal principal, HttpServletRequest request, @PathVariable String isAck, Model model) {
         String login = principal.getName();
         Manager manager = managerService.getByLogin(login);
+        if (request.getParameter("driverId").isEmpty())
+            return handleError(manager, model, "Driver id is empty!");
         Long driverId = Long.parseLong(request.getParameter("driverId"));
-        managerService.sendAnswerToDriver(manager, driverId, isAck.equals("ACK"));
+        try {
+            managerService.sendAnswerToDriver(manager, driverId, isAck.equals("ACK"));
+        } catch (NoEntityException e) {
+            return handleError(manager, model, e.getMessage());
+        }
         fillModel(manager, model);
         return "Manager";
     }
@@ -60,9 +73,17 @@ public class ManagerHtmlController {
     public String sendOrderToDriver(Principal principal, HttpServletRequest request, Model model) {
         String login = principal.getName();
         Manager manager = managerService.getByLogin(login);
-        Long orderId = Long.parseLong(request.getParameter("sendOrderId"));
+        if (request.getParameter("sendDriverId").isEmpty())
+            return handleError(manager, model, "Driver id is empty!");
+        if (request.getParameter("sendOrderId").isEmpty())
+            return handleError(manager, model, "Order id is empty!");
         Long driverId = Long.parseLong(request.getParameter("sendDriverId"));
-        managerService.sendOrderToDriver(manager, orderId, driverId);
+        Long orderId = Long.parseLong(request.getParameter("sendOrderId"));
+        try {
+            managerService.sendOrderToDriver(manager, orderId, driverId);
+        } catch (NoEntityException e) {
+            return handleError(manager, model, e.getMessage());
+        }
         fillModel(manager, model);
         return "Manager";
     }
@@ -71,8 +92,14 @@ public class ManagerHtmlController {
     public String activateDriver(Principal principal, HttpServletRequest request, Model model) {
         String login = principal.getName();
         Manager manager = managerService.getByLogin(login);
+        if (request.getParameter("activateDriverId").isEmpty())
+            return handleError(manager, model, "Driver id for activation is empty!");
         Long driverId = Long.parseLong(request.getParameter("activateDriverId"));
-        managerService.activateDriver(driverId);
+        try {
+            managerService.activateDriver(driverId);
+        } catch (NoEntityException e) {
+            return handleError(manager, model, e.getMessage());
+        }
         model.addAttribute("activationSuccess", true);
         fillModel(manager, model);
         return "Manager";
@@ -86,5 +113,15 @@ public class ManagerHtmlController {
         model.addAttribute("managerMessages", messages);
         model.addAttribute("driverList", drivers);
         model.addAttribute("orderList", orders);
+
+        for (Driver d : managerService.getAllDrivers()) {
+            System.out.println(d.getId() +  " " + d.getPersonInfo() + " " + d.getCar() + " " + d.isActive() + " " + d.getLogin());
+        }
+    }
+
+    private String handleError(Manager manager, Model model, String errorMsg) {
+        fillModel(manager, model);
+        model.addAttribute("errorMsg", errorMsg);
+        return "Manager";
     }
 }

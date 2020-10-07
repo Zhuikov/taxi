@@ -24,9 +24,9 @@ public abstract class TaxiItemRepository<T extends TaxiItem> {
 
     abstract public long add(T entity);
 
-    abstract public void deleteById(int entity);
+    abstract public void deleteById(Long entity);
 
-    abstract public T getById(int id) throws NoEntityException;
+    abstract public T getById(Long id) throws NoEntityException;
 
     abstract public void update(T entity);
 

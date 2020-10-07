@@ -3,6 +3,7 @@ package taxiApp.springapp.controllers.html;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import taxiApp.Exceptions.NoEntityException;
 import taxiApp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,11 @@ public class DriverHtmlController {
         String login = principal.getName();
         Driver driver = driverService.getByLogin(login);
         Long idOrder = Long.parseLong(request.getParameter("idOrder"));
-        driverService.finishOrder(driver, idOrder);
+        try {
+            driverService.finishOrder(driver, idOrder);
+        } catch (NoEntityException e) {
+            return handleError(driver, model, e.getMessage());
+        }
         fillModel(driver, model);
         model.addAttribute("orderFinished", true);
         return "Driver";
@@ -57,8 +62,14 @@ public class DriverHtmlController {
     public String setOrder(Principal principal, HttpServletRequest request, Model model) {
         String login = principal.getName();
         Driver driver = driverService.getByLogin(login);
+        if (request.getParameter("idOrder").isEmpty())
+            return handleError(driver, model, "Order id is empty!");
         Long idOrder = Long.parseLong(request.getParameter("idOrder"));
-        driverService.setOrder(driver, idOrder);
+        try {
+            driverService.setOrder(driver, idOrder);
+        } catch (NoEntityException e) {
+            return handleError(driver, model, e.getMessage());
+        }
         fillModel(driver, model);
         model.addAttribute("orderSet", true);
         return "Driver";
@@ -70,6 +81,13 @@ public class DriverHtmlController {
         model.addAttribute("name", driver.getPersonInfo().toString());
         model.addAttribute("driverMessages", messages);
         model.addAttribute("currentOrder", order);
+        model.addAttribute("driversCar", driver.getCar().toString());
+    }
+
+    private String handleError(Driver driver, Model model, String errorMsg) {
+        fillModel(driver, model);
+        model.addAttribute("errorMsg", errorMsg);
+        return "Driver";
     }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import taxiApp.core.User;
+import taxiApp.core.*;
 import taxiApp.springapp.repos.CarsOwnerRepository;
 import taxiApp.springapp.repos.DriverRepository;
 import taxiApp.springapp.repos.ManagerRepository;
@@ -51,23 +51,27 @@ public class LoginController {
         String login = request.getParameter("login");
         System.out.println("Request: " +  login);
 
-        User user = driverRepository.findByLogin(login);
-        if (user != null) {
+        Driver driver = driverRepository.findByLogin(login);
+        if (driver != null) {
+            if (!driver.isActive()) {
+                model.addAttribute("driverActiveError", true);
+                return "Login";
+            }
             addPrincipal(login);
             return "redirect:driver/front";
         }
-        user = managerRepository.findByLogin(login);
-        if (user != null) {
+        Manager manager = managerRepository.findByLogin(login);
+        if (manager != null) {
             addPrincipal(login);
             return "redirect:manager/front";
         }
-        user = ownerRepository.findByLogin(login);
-        if (user != null) {
+        CarsOwner owner = ownerRepository.findByLogin(login);
+        if (owner != null) {
             addPrincipal(login);
             return "redirect:owner/front";
         }
-        user = clientRepository.findByLogin(login);
-        if (user != null) {
+        TaxiClient client = clientRepository.findByLogin(login);
+        if (client != null) {
             addPrincipal(login);
             return "redirect:client/front";
         }
@@ -75,12 +79,6 @@ public class LoginController {
         model.addAttribute("loginError", true);
         return "Login";
     }
-
-//    @RequestMapping("/login-error")
-//    public String loginError(Model model) {
-//        model.addAttribute("loginError", true);
-//        return "Login";
-//    }
 
     private void addPrincipal(String login) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(login, "-");

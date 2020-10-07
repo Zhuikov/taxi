@@ -21,7 +21,8 @@
     <h2> You are logged in as manager </h2>
     <h2 th:text="${name}">--</h2>
 </div>
-<br>
+
+<h2 th:if="${errorMsg}" th:text="${errorMsg}">--</h2>
 
 <div class="managerMessages" th:unless="${#lists.isEmpty(managerMessages)}">
     <h2> Messages </h2>
@@ -60,7 +61,7 @@
         <tbody>
         <tr th:each="order : ${orderList}">
             <td th:text="${{order.id}}">--</td>
-            <td th:text="${{order.clientId}}">--</td>
+            <td th:text="${{order.idClient}}">--</td>
             <td th:text="${{order.srcAddress}}">--</td>
             <td th:text="${{order.dstAddress}}">--</td>
             <td th:text="${{order.status}}">--</td>

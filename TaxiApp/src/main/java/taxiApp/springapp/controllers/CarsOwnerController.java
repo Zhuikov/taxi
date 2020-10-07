@@ -1,5 +1,7 @@
 package taxiApp.springapp.controllers;
 
+import taxiApp.Exceptions.CarIsUsingException;
+import taxiApp.Exceptions.NoEntityException;
 import taxiApp.core.Car;
 import taxiApp.core.CarsOwner;
 import taxiApp.core.Message;
@@ -47,10 +49,10 @@ public class CarsOwnerController {
 //    }
 
     @GetMapping("/cv/{cvId}/ack/{carId}")
-    void ackCV(Principal principal, @PathVariable Long cvId, @PathVariable Long carId) {
+    void ackCV(Principal principal, @PathVariable Long cvId, @PathVariable Long carId) throws CarIsUsingException, NoEntityException {
         String login = principal.getName();
         CarsOwner owner = ownerService.getByLogin(login);
-        ownerService.ackCV(owner.getId(), cvId, carId);
+        ownerService.ackCV(owner, cvId, carId);
     }
 
 }

@@ -1,5 +1,6 @@
 package taxiApp.springapp.controllers;
 
+import taxiApp.Exceptions.NoEntityException;
 import taxiApp.core.Driver;
 import taxiApp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,6 @@ public class DriverController {
         this.driverService = driverService;
     }
 
-//    @GetMapping("/{id}")
-//    Driver getById(@PathVariable Long id) { return driverService.getById(id); }
-
     @GetMapping("/messages")
     List<Message> getMessages(Principal principal) {
         String login = principal.getName();
@@ -40,14 +38,14 @@ public class DriverController {
     }
 
     @GetMapping("/finish/{idOrder}")
-    void finishOrder(Principal principal, @PathVariable Long idOrder) {
+    void finishOrder(Principal principal, @PathVariable Long idOrder) throws NoEntityException {
         String login = principal.getName();
         Driver driver = driverService.getByLogin(login);
         driverService.finishOrder(driver, idOrder);
     }
 
     @GetMapping("/set/{idOrder}")
-    void setOrder(Principal principal, @PathVariable Long idOrder) {
+    void setOrder(Principal principal, @PathVariable Long idOrder) throws NoEntityException {
         String login = principal.getName();
         Driver driver = driverService.getByLogin(login);
         driverService.setOrder(driver, idOrder);

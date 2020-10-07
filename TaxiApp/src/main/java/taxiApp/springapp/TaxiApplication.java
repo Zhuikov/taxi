@@ -46,16 +46,16 @@ public class TaxiApplication {
 
             TaxiClient client1 = new TaxiClient("client1", new PersonInfo("Elena", "Nateeva", "89234238084"));
             TaxiClient client2 = new TaxiClient("client2", new PersonInfo("Olga", "Lebedeva", "89998346212"));
-            client1 = taxiClientRepository.save(client1); taxiClientRepository.save(client2);
+            client1 = taxiClientRepository.save(client1); client2 = taxiClientRepository.save(client2);
 
-            CV cv1 = new CV(client1.getId(), "Slava", "Taskov", "899013478233", 4, false);
-            CV cv2 = new CV(client1.getId(), "Roman", "Lonely", "899013423411", 3, true);
+            CV cv1 = new CV(client2.getId(), "Slava", "Taskov", "89901347833", 4, false);
+            CV cv2 = new CV(client1.getId(), "Roman", "Lonely", "89901342311", 3, true);
             cvRepository.save(cv1); cvRepository.save(cv2);
 
             Manager manager = new Manager("manager1", new PersonInfo("Vladimir", "Yuranov", "89244389029"));
             manager = managerRepository.save(manager);
 
-            Order order = new Order("Street White, Building 3", "Street Red, Building 12", client1);
+            Order order = new Order("Street White, Building 3", "Street Red, Building 12", client2);
             order = orderRepository.save(order);
             System.out.println("Order id = " + order.getId());
 
@@ -65,4 +65,3 @@ public class TaxiApplication {
         };
     }
 }
-

@@ -25,12 +25,12 @@ public class CarRepository extends TaxiItemRepository<Car> {
     }
 
     @Override
-    public void deleteById(int entity) {
+    public void deleteById(Long entity) {
 
     }
 
     @Override
-    public Car getById(int id) throws NoEntityException {
+    public Car getById(Long id) throws NoEntityException {
         return null;
     }
 

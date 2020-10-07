@@ -29,14 +29,6 @@ public class WebMvcConfiguration
         this.applicationContext = applicationContext;
     }
 
-//    @Override
-//    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-//        super.addResourceHandlers(registry);
-//        registry.addResourceHandler("images/**").addResourceLocations("classpath:/static/images/");
-//        registry.addResourceHandler("css/**").addResourceLocations("classpath:/static/css/");
-//        registry.addResourceHandler("js/**").addResourceLocations("classpath:/static/js/");
-//    }
-
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();

@@ -40,6 +40,6 @@ public class Car extends TaxiItem {
 
     @Override
     public String toString() {
-        return "Car " + model + " [" + licensePlate + "]";
+        return model + " [" + licensePlate + "]";
     }
 }

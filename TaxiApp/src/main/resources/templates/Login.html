@@ -11,6 +11,7 @@
     <h2>Login</h2>
 
     <p th:if="${loginError}" class="error">Wrong login</p>
+    <p th:if="${driverActiveError}" class="error">Driver not activated</p>
 
     <form action="#" th:action="@{/login}" method="post">
 

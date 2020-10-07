@@ -15,10 +15,6 @@ public class Order extends TaxiItem {
     @ManyToOne
     @JoinColumn(name = "id_user")
     private final TaxiClient taxiClient;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "id_driver")
-//    private Driver driver = null;
 
     @Enumerated
     @Column(name = "status", columnDefinition = "smallint")

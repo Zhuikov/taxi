@@ -1,5 +1,6 @@
 package taxiApp.springapp.controllers;
 
+import taxiApp.Exceptions.NoEntityException;
 import taxiApp.core.Manager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,32 +20,29 @@ public class ManagerController {
         this.managerService = managerService;
     }
 
-//    @GetMapping("/{id}")
-//    Manager getById(@PathVariable Long id) { return managerService.getById(id); }
-
     @GetMapping("/order/{orderId}/{isAck}")
-    void sendAnswerToClient(Principal principal, @PathVariable Long orderId, @PathVariable String isAck) {
+    void sendAnswerToClient(Principal principal, @PathVariable Long orderId, @PathVariable String isAck) throws NoEntityException {
         String login = principal.getName();
         Manager manager = managerService.getByLogin(login);
         managerService.sendAnswerToClient(manager, orderId, isAck.equals("ACK"));
     }
 
     @GetMapping("/driver/{driverId}/{isAck}")
-    void sendAnswerToDriver(Principal principal, @PathVariable Long driverId, @PathVariable String isAck) {
+    void sendAnswerToDriver(Principal principal, @PathVariable Long driverId, @PathVariable String isAck) throws NoEntityException {
         String login = principal.getName();
         Manager manager = managerService.getByLogin(login);
         managerService.sendAnswerToDriver(manager, driverId, isAck.equals("ACK"));
     }
 
     @GetMapping("/order/{orderId}/driver/{driverId}")
-    void sendOrderToDriver(Principal principal, @PathVariable Long orderId, @PathVariable Long driverId) {
+    void sendOrderToDriver(Principal principal, @PathVariable Long orderId, @PathVariable Long driverId) throws NoEntityException {
         String login = principal.getName();
         Manager manager = managerService.getByLogin(login);
         managerService.sendOrderToDriver(manager, orderId, driverId);
     }
 
     @GetMapping("/activate/{driverId}")
-    void activateDriver(@PathVariable Long driverId) {
+    void activateDriver(@PathVariable Long driverId) throws NoEntityException {
         managerService.activateDriver(driverId);
     }
 

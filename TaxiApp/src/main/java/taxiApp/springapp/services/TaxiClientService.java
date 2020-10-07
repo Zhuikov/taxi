@@ -33,10 +33,6 @@ public class TaxiClientService extends UserService {
         return clientRepository.findByLogin(login);
     }
 
-    public TaxiClient getById(Long id) {
-        return clientRepository.findById(id).get();
-    }
-
     public List<OrderRepresentation> getClientsOrders(TaxiClient client) {
         List<Order> orders = orderRepository.findByTaxiClient(client);
         List<OrderRepresentation> result = new ArrayList<>();

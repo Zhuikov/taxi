@@ -56,9 +56,9 @@ public class CVRepository extends TaxiItemRepository<CV> {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_STMT)) {
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("ERROR CVRepository::deleteById (id = " + id + ")");
@@ -67,9 +67,9 @@ public class CVRepository extends TaxiItemRepository<CV> {
     }
 
     @Override
-    public CV getById(int id) throws NoEntityException {
+    public CV getById(Long id) throws NoEntityException {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_STMT)) {
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Long userId = rs.getLong("userId");

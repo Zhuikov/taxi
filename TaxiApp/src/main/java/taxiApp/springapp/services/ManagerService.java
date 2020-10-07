@@ -1,5 +1,6 @@
 package taxiApp.springapp.services;
 
+import taxiApp.Exceptions.NoEntityException;
 import taxiApp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import taxiApp.springapp.services.representations.OrderRepresentation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ManagerService extends UserService {
@@ -32,6 +34,10 @@ public class ManagerService extends UserService {
         return managerRepository.findByLogin(login);
     }
 
+    public List<Driver> getAllDrivers () {
+        return driverRepository.findAll();
+    }
+
     public List<DriverRepresentation> getDrivers() {
         List<Driver> drivers = driverRepository.findAll();
         List<DriverRepresentation> result = new ArrayList<>();
@@ -49,31 +55,41 @@ public class ManagerService extends UserService {
         return result;
     }
 
-    public void sendOrderToDriver(Manager manager, Long orderId, Long idDriver) {
-        Driver driver = driverRepository.findById(idDriver).get();
-        Message message = new Message(manager, driver, MessageType.ORDER, orderId);
+    public void sendOrderToDriver(Manager manager, Long orderId, Long idDriver) throws NoEntityException {
+        Optional<Driver> driver = driverRepository.findById(idDriver);
+        if (!driver.isPresent())
+            throw new NoEntityException(idDriver);
+        Message message = new Message(manager, driver.get(), MessageType.ORDER, orderId);
         messageRepository.save(message);
     }
 
-    public void sendAnswerToClient(Manager manager, Long orderId, boolean isAck) {
-        Order order = orderRepository.findById(orderId).get();
-        TaxiClient client = clientRepository.findById(order.getTaxiClient().getId()).get();
-        order.setStatus(isAck ? OrderStatus.ACCEPTED : OrderStatus.DECLINED);
-        Message message = new Message(manager, client, isAck ? MessageType.ACK : MessageType.NACK, null);
+    public void sendAnswerToClient(Manager manager, Long orderId, boolean isAck) throws NoEntityException {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if (!order.isPresent())
+            throw new NoEntityException(orderId);
+        Optional<TaxiClient> client = clientRepository.findById(order.get().getTaxiClient().getId());
+        order.get().setStatus(isAck ? OrderStatus.ACCEPTED : OrderStatus.DECLINED);
+        if (!client.isPresent())
+            throw new NoEntityException(orderId);
+        Message message = new Message(manager, client.get(), isAck ? MessageType.ACK : MessageType.NACK, null);
         messageRepository.save(message);
-        orderRepository.save(order);
+        orderRepository.save(order.get());
     }
 
-    public void sendAnswerToDriver(Manager manager, Long driverId, boolean isAck) {
-        Driver driver = driverRepository.findById(driverId).get();
-        Message message = new Message(manager, driver, isAck ? MessageType.ACK : MessageType.NACK, null);
+    public void sendAnswerToDriver(Manager manager, Long driverId, boolean isAck) throws NoEntityException {
+        Optional<Driver> driver = driverRepository.findById(driverId);
+        if (!driver.isPresent())
+            throw new NoEntityException(driverId);
+        Message message = new Message(manager, driver.get(), isAck ? MessageType.ACK : MessageType.NACK, null);
         messageRepository.save(message);
     }
 
-    public void activateDriver(Long driverId) {
-        Driver driver = driverRepository.findById(driverId).get();
-        driver.setActive(true);
-        driverRepository.save(driver);
+    public void activateDriver(Long driverId) throws NoEntityException {
+        Optional<Driver> driver = driverRepository.findById(driverId);
+        if (!driver.isPresent())
+            throw new NoEntityException(driverId);
+        driver.get().setActive(true);
+        driverRepository.save(driver.get());
     }
 
 }

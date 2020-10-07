@@ -1,11 +1,14 @@
 package taxiApp.springapp.services;
 
+import taxiApp.Exceptions.CarIsUsingException;
+import taxiApp.Exceptions.NoEntityException;
 import taxiApp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import taxiApp.springapp.repos.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarsOwnerService extends UserService {
@@ -42,24 +45,34 @@ public class CarsOwnerService extends UserService {
         return cvRepository.findAll();
     }
 
-    public void nackCV(Long id, Long cvId) {
-        CV cv = cvRepository.findById(cvId).get();
-        CarsOwner owner = ownerRepository.findById(id).get();
-        TaxiClient client = clientRepository.findById(cv.getUserId()).get();
-        cv.setShown(true);
-        Message message = new Message(owner, client, MessageType.NACK, null);
+    public void nackCV(CarsOwner owner, Long cvId) throws NoEntityException {
+        Optional<CV> cv = cvRepository.findById(cvId);
+        if (!cv.isPresent())
+            throw new NoEntityException(cvId);
+        Optional<TaxiClient> client = clientRepository.findById(cv.get().getUserId());
+        if (!client.isPresent())
+            throw new NoEntityException(cv.get().getUserId());
+        cv.get().setShown(true);
+        Message message = new Message(owner, client.get(), MessageType.NACK, null);
         messageRepository.save(message);
-        cvRepository.save(cv);
+        cvRepository.save(cv.get());
     }
 
-    public void ackCV(Long id, Long cvId, Long carId) {
-        CV cv = cvRepository.findById(cvId).get();
-        TaxiClient client = clientRepository.findById(cv.getUserId()).get();
-        CarsOwner owner = ownerRepository.findById(id).get();
-        Car car = carRepository.findById(carId).get();
-
-        Driver newDriver = new Driver(cv.getName() + cv.getSurname(),
-                new PersonInfo(cv.getName(), cv.getSurname(), cv.getPhone()), car);
+    public void ackCV(CarsOwner owner, Long cvId, Long carId) throws NoEntityException, CarIsUsingException {
+        Optional<CV> cv = cvRepository.findById(cvId);
+        if (!cv.isPresent())
+            throw new NoEntityException(cvId);
+        Optional<TaxiClient> client = clientRepository.findById(cv.get().getUserId());
+        if (!client.isPresent())
+            throw new NoEntityException(cv.get().getUserId());
+        Optional<Car> car = carRepository.findById(carId);
+        if (!car.isPresent())
+            throw new NoEntityException(carId);
+        Driver carDriver = checkUsingCar(car.get());
+        if (carDriver != null)
+            throw new CarIsUsingException(car.get(), carDriver);
+        Driver newDriver = new Driver(cv.get().getName() + cv.get().getSurname(),
+                new PersonInfo(cv.get().getName(), cv.get().getSurname(), cv.get().getPhone()), car.get());
         newDriver = driverRepository.save(newDriver);
 
         List<Manager> managers = managerRepository.findAll();
@@ -67,11 +80,14 @@ public class CarsOwnerService extends UserService {
             Message message = new Message(owner, m, MessageType.DRIVER, newDriver.getId());
             messageRepository.save(message);
         }
-        Message message = new Message(owner, client, MessageType.ACK, null);
+        Message message = new Message(owner, client.get(), MessageType.ACK, null);
         messageRepository.save(message);
-        cv.setShown(true);
-        cvRepository.save(cv);
+        cv.get().setShown(true);
+        cvRepository.save(cv.get());
     }
 
+    private Driver checkUsingCar(Car car) {
+        return driverRepository.findByCar(car);
+    }
 
 }
