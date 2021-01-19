@@ -3,6 +3,8 @@ package taxiApp.springapp;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import taxiApp.core.*;
 import taxiApp.springapp.repos.*;
@@ -11,9 +13,14 @@ import java.util.ArrayList;
 
 
 @SpringBootApplication
-public class TaxiApplication {
+public class TaxiApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(TaxiApplication.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(TaxiApplication.class);
     }
 
     @Bean

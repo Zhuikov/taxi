@@ -51,4 +51,14 @@ public class Order extends TaxiItem {
     public TaxiClient getTaxiClient() {
         return taxiClient;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "dstAddress='" + dstAddress + '\'' +
+                ", srcAddress='" + srcAddress + '\'' +
+                ", taxiClient=" + taxiClient +
+                ", status=" + status +
+                '}';
+    }
 }

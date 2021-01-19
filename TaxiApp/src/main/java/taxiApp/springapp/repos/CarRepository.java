@@ -7,5 +7,5 @@ import taxiApp.core.CarsOwner;
 import java.util.List;
 
 public interface CarRepository extends CrudRepository<Car, Long> {
-    List<Car> findAllByOwner(CarsOwner owner);
+    List<Car> findByOwner(CarsOwner owner);
 }

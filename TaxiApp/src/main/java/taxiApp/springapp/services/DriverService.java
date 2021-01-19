@@ -8,6 +8,7 @@ import taxiApp.springapp.repos.DriverRepository;
 import taxiApp.springapp.repos.ManagerRepository;
 import taxiApp.springapp.repos.MessageRepository;
 import taxiApp.springapp.repos.OrderRepository;
+import taxiApp.springapp.services.representations.OrderRepresentation;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,11 @@ public class DriverService extends UserService {
     }
 
     public Order getOrder(Long id) {
-        Driver driver = driverRepository.findById(id).get();
+//        Driver driver = driverRepository.findById(id).get();
+        return orderRepository.findById(id).get();
+    }
+
+    public Order getCurrentOrder(Driver driver) {
         return driver.getOrder();
     }
 
@@ -47,7 +52,7 @@ public class DriverService extends UserService {
     public void finishOrder(Driver driver, Long idOrder) throws NoEntityException {
         Optional<Order> order = orderRepository.findById(idOrder);
         if (!order.isPresent())
-            throw new NoEntityException(idOrder);
+            throw new NoEntityException(idOrder, "order");
         order.get().setStatus(OrderStatus.FINISHED);
         driver.setOrder(null);
         driver.setStatus(DriverStatus.FREE);
@@ -58,7 +63,7 @@ public class DriverService extends UserService {
     public void setOrder(Driver driver, Long idOrder) throws NoEntityException {
         Optional<Order> order = orderRepository.findById(idOrder);
         if (!order.isPresent())
-            throw new NoEntityException(idOrder);
+            throw new NoEntityException(idOrder, "order");
         order.get().setStatus(OrderStatus.ACCEPTED);
         driver.setOrder(order.get());
         driver.setStatus(DriverStatus.BUSY);

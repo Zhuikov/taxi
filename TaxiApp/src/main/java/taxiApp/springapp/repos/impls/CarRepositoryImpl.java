@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @NoRepositoryBean
 public class CarRepositoryImpl extends CrudRepositoryImpl<Car> implements CarRepository {
     @Override
-    public List<Car> findAllByOwner(CarsOwner owner) {
+    public List<Car> findByOwner(CarsOwner owner) {
         return items.stream().
                 filter(car -> Objects.equals(car.getOwner().getId(), owner.getId()))
                 .collect(Collectors.toList());

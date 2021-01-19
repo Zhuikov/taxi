@@ -1,5 +1,7 @@
 package taxiApp.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,6 +10,7 @@ public class Car extends TaxiItem {
 
     @ManyToOne
     @JoinColumn(name="id_owner", nullable=false)
+    @JsonIgnore
     private final CarsOwner owner;
     @Column
     private final String licensePlate;

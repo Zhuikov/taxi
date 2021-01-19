@@ -86,7 +86,7 @@ public class CVRepository extends TaxiItemRepository<CV> {
             System.out.println("ERROR CVRepository::getById (id = " + id + ")");
             e.printStackTrace();
         }
-        throw new NoEntityException(id);
+        throw new NoEntityException(id, "cv");
     }
 
     @Override

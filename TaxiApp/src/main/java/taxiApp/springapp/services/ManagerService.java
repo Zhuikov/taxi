@@ -58,7 +58,10 @@ public class ManagerService extends UserService {
     public void sendOrderToDriver(Manager manager, Long orderId, Long idDriver) throws NoEntityException {
         Optional<Driver> driver = driverRepository.findById(idDriver);
         if (!driver.isPresent())
-            throw new NoEntityException(idDriver);
+            throw new NoEntityException(idDriver, "driver");
+        Optional<Order> order = orderRepository.findById(orderId);
+        if (!order.isPresent())
+            throw new NoEntityException(orderId, "order");
         Message message = new Message(manager, driver.get(), MessageType.ORDER, orderId);
         messageRepository.save(message);
     }
@@ -66,11 +69,11 @@ public class ManagerService extends UserService {
     public void sendAnswerToClient(Manager manager, Long orderId, boolean isAck) throws NoEntityException {
         Optional<Order> order = orderRepository.findById(orderId);
         if (!order.isPresent())
-            throw new NoEntityException(orderId);
+            throw new NoEntityException(orderId, "order");
         Optional<TaxiClient> client = clientRepository.findById(order.get().getTaxiClient().getId());
         order.get().setStatus(isAck ? OrderStatus.ACCEPTED : OrderStatus.DECLINED);
         if (!client.isPresent())
-            throw new NoEntityException(orderId);
+            throw new NoEntityException(orderId, "client");
         Message message = new Message(manager, client.get(), isAck ? MessageType.ACK : MessageType.NACK, null);
         messageRepository.save(message);
         orderRepository.save(order.get());
@@ -79,7 +82,7 @@ public class ManagerService extends UserService {
     public void sendAnswerToDriver(Manager manager, Long driverId, boolean isAck) throws NoEntityException {
         Optional<Driver> driver = driverRepository.findById(driverId);
         if (!driver.isPresent())
-            throw new NoEntityException(driverId);
+            throw new NoEntityException(driverId, "driver");
         Message message = new Message(manager, driver.get(), isAck ? MessageType.ACK : MessageType.NACK, null);
         messageRepository.save(message);
     }
@@ -87,7 +90,7 @@ public class ManagerService extends UserService {
     public void activateDriver(Long driverId) throws NoEntityException {
         Optional<Driver> driver = driverRepository.findById(driverId);
         if (!driver.isPresent())
-            throw new NoEntityException(driverId);
+            throw new NoEntityException(driverId, "driver");
         driver.get().setActive(true);
         driverRepository.save(driver.get());
     }

@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -27,6 +28,15 @@ public class WebMvcConfiguration
 
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        super.addResourceHandlers(registry);
+        registry.addResourceHandler("images/**").addResourceLocations("classpath:/static/images/");
+        registry.addResourceHandler("css/**").addResourceLocations("classpath:/static/css/");
+        registry.addResourceHandler("js/**").addResourceLocations("classpath:/static/js/");
+        registry.addResourceHandler("built/**").addResourceLocations("classpath:/static/built/");
     }
 
     @Bean

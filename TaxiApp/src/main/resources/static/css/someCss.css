@@ -1,0 +1,28 @@
+/*input {*/
+/*    padding: 6px;*/
+/*    font-size: 14px;*/
+/*    border-radius: 4px;*/
+/*}*/
+
+/*label {*/
+/*    width: 240px;*/
+/*}*/
+
+.container {
+    width: 500px;
+    clear: both;
+}
+
+.container input {
+    width: 100%;
+    clear: both;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
+}
